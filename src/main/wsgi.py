@@ -30,7 +30,7 @@ def application(environ, start_response):
         b"<body>"
         b"<h1 style='text-align:center'>It's my project!</h1>"
         b"<hr style='border: 2px solid blue;'>"
-        b"<p>This is a template project.</p>"
+        b"<p style='color:#ffff00'>This is a template project.</p>"
         b"</body>"
         b"</html>"
     )
