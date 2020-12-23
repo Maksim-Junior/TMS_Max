@@ -21,9 +21,9 @@ def application(environ, start_response):
         b"<head>"
         b"<title>Maksim</title>"
         b"<style>"
-        b"body {" 
-        b"background: #333;"
-        b"}"
+        # b"body {" 
+        # b"background: #333;"
+        # b"}"
         b"<style>"
         b'<meta charset="utf-8">'
         b"</head>"
