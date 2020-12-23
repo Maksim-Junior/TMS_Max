@@ -23,7 +23,7 @@ def application(environ, start_response):
         b"<style>"
         b"hr {"
         b"border: none;" 
-        b"background-color: red;" 
+        b"background-color: white;" 
         b"color: white;" 
         b"height: 2px;" 
         b"}"
