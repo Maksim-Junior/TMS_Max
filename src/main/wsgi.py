@@ -27,7 +27,7 @@ def application(environ, start_response):
        # b"<style>"
         b'<meta charset="utf-8">'
         b"</head>"
-        b"<body>"
+        b"<body bgcolor='#696969'>"
         b"<h1 style='text-align:center'>It's my project!</h1>"
         b"<hr style='border: 2px solid blue;'>"
         b"<p style='color:#ffff00'>This is a template project.</p>"
