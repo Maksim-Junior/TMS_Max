@@ -20,11 +20,7 @@ def application(environ, start_response):
         b"<html>"
         b"<head>"
         b"<title>Maksim</title>"
-       # b"<style>"
-        # b"body {" 
-        # b"background: #333;"
-        # b"}"
-       # b"<style>"
+        b"<p><img src='/home/maksim/Downloads/panda.jpg' alt='Письма мастера дзен'></p>"
         b'<meta charset="utf-8">'
         b"</head>"
         b"<body bgcolor='#696969'>"
