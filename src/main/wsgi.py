@@ -19,7 +19,7 @@ def application(environ, start_response):
         b"<!DOCTYPE html>"
         b"<html>"
         b"<head>"
-        b"<title>Alpha</title>"
+        b"<title>Maksim</title>"
         b'<meta charset="utf-8">'
         b"</head>"
         b"<body>"
