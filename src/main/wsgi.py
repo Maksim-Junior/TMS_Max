@@ -47,7 +47,7 @@ def application(environ, start_response):
         b"The Python interpreter and the extensive standard library are available in source or binary"
         b" form without charge for all major platforms, and can be freely distributed.</p>"
         b"</body>"
-        b"</html>"
+        b"</html>"вв
     )
 
     start_response(status, list(headers.items()))
