@@ -17,7 +17,7 @@ def application(environ, start_response):
 
     show_environ = b''
     for key, value in environ.items():
-        show_environ += ("<p style = 'color:#E6E6FA'><nobr>{}:"
+        show_environ += ("<p style = 'color:#E6E6FA'>{}:"
                          "<span style = 'color:#FFA07A;font-family: courier, monospace;'>"
                          " {}</span></p>".format(key, value).encode())
 
