@@ -17,7 +17,9 @@ def application(environ, start_response):
 
     show_environ = b''
     for key, value in environ.items():
-        show_environ += (" {}: {} ".format(key, value).encode())
+        show_environ += ("<p style = 'color:#E6E6FA'><nobr>{}:"
+                         "<span style = 'color:#FFA07A;font-family: courier, monospace;'>"
+                         " {}</span></p>".format(key, value).encode())
 
     payload = (
         b"<!DOCTYPE html>",
@@ -49,9 +51,8 @@ def application(environ, start_response):
         b" the cost of program maintenance. Python supports modules and packages,",
         b" which encourages program modularity and code reuse.",
         b"The Python interpreter and the extensive standard library are available in source or binary",
-        b" form without charge for all major platforms, and can be freely distributed.</p>",
-        b"<p style = 'color:#FFA07A;font-family: courier, monospace;'>", show_environ,
-        b"</p>",
+        b" form without charge for all major platforms, and can be freely distributed.</p><br/>",
+        b"<h2 style='color:#E6E6FA'>Content of environ:</h2>", show_environ,
         b"</body>",
         b"</html>",
     )
