@@ -37,8 +37,10 @@ def environ_formation(environ):
 def website_page(environ, format_word):
     if environ["PATH_INFO"] == "/environ/":
         return (read_template("environ.html")).format(environ=format_word)
-    else:
+    elif environ["PATH_INFO"] == "/":
         return read_template("index.html")
+    else:
+        return read_template("notFound.html")
 
 
 def read_template(template_name: str) -> str:
