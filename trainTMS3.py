@@ -39,11 +39,6 @@ def divide_into_rubles_and_penny(count_of_many):
             count_of_rubles.append(rubles[key] + str(rub // key))
             rub -= key * (rub // key)
 
-    for key in rubles:
-        if rub // key > 0:
-            count_of_rubles.append(rubles[key] + str(rub // key))
-            rub -= key * (rub // key)
-
     for key in penny:
         if pen // key > 0:
             count_of_penny.append(penny[key] + str(pen // key))

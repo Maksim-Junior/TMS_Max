@@ -16,12 +16,20 @@ def application(environ, start_response):
         "Content-type": "text/html",
     }
 
+    path = extract_path(environ)
+
+    handlers = {
+        '/': index_page,
+        '/environ/': environ_page
+    }
+
+    web_page = handlers[path]
+
     show_environ = environ_formation(environ)
-    payload = website_page(environ, show_environ)
 
     start_response(status, list(headers.items()))
 
-    yield payload.encode()
+    yield web_page().format(environ=show_environ).encode()
 
 
 def environ_formation(environ):
@@ -34,13 +42,16 @@ def environ_formation(environ):
     return show_environ
 
 
-def website_page(environ, format_word):
-    if environ["PATH_INFO"] == "/environ/":
-        return (read_template("environ.html")).format(environ=format_word)
-    elif environ["PATH_INFO"] == "/":
-        return read_template("index.html")
-    else:
-        return read_template("notFound.html")
+def extract_path(environ) -> str:
+    return environ["PATH_INFO"]
+
+
+def index_page() -> str:
+    return read_template("index.html")
+
+
+def environ_page() -> str:
+    return read_template("environ.html")
 
 
 def read_template(template_name: str) -> str:
