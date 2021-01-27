@@ -7,8 +7,6 @@ sentry_sdk.init(get_setting("SENTRY_DSN"), traces_sample_rate=1.0)
 
 
 def application(environ, start_response):
-    if environ["PATH_INFO"] == "/e/":
-        division = 1 / 0
 
     status = "200 OK"
 
@@ -16,23 +14,26 @@ def application(environ, start_response):
         "Content-type": "text/html",
     }
 
-    path = extract_path(environ)
-
     handlers = {
         '/': index_page,
-        '/environ/': environ_page
+        '/environ/': environ_page,
+        '/e/': division_zero_page,
     }
 
-    web_page = handlers[path]
+    path = extract_path(environ)
+
+    web_page = handlers.get(path, not_found_page)
 
     show_environ = environ_formation(environ)
 
     start_response(status, list(headers.items()))
 
-    yield web_page().format(environ=show_environ).encode()
+    show_web_page = web_page().format(environ=show_environ).encode()
+
+    yield show_web_page
 
 
-def environ_formation(environ):
+def environ_formation(environ: dict):
     show_environ = ""
     for key, value in environ.items():
         show_environ += (f"<p style = 'color:#E6E6FA'>{key}:"
@@ -42,8 +43,16 @@ def environ_formation(environ):
     return show_environ
 
 
-def extract_path(environ) -> str:
+def extract_path(environ: dict) -> str:
     return environ["PATH_INFO"]
+
+
+def division_zero_page():
+    return 1 / 0
+
+
+def not_found_page() -> str:
+    return read_template("notFound.html")
 
 
 def index_page() -> str:
