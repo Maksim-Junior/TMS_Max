@@ -31,6 +31,10 @@ def divide_into_rubles_and_penny(count_of_money):
 
     rubles_and_penny = count_of_money.split(".")
 
+    if rubles_and_penny[0][0] == "0":
+        while rubles_and_penny[0][0] != "0":
+            rubles_and_penny[0] = rubles_and_penny[0][1:]
+
     if len(rubles_and_penny[1]) == 1:
         rubles_and_penny[1] += "0"
     elif len(rubles_and_penny[1]) == 2 and rubles_and_penny[1][0] == "0" and rubles_and_penny[1][1] != 0:

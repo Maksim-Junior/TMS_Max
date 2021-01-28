@@ -5,11 +5,19 @@ import sentry_sdk
 
 from framework.dirs import DIR_SRC, DIR_TASKS
 from framework.util.settings import get_setting
-from tasks.lesson3 import task310
+from tasks.lesson3 import task310, task311
 
 sentry_sdk.init(get_setting("SENTRY_DSN"), traces_sample_rate=1.0)
 
 ResponseT = Tuple[str, str, str]
+
+
+def is_number(s):
+    try:
+        float(s)
+        return True
+    except ValueError:
+        return False
 
 
 def task_310_page(method: str, path: str, qs: str) -> ResponseT:
@@ -29,7 +37,7 @@ def task_310_page(method: str, path: str, qs: str) -> ResponseT:
         show_rubles = ""
         show_penny = ""
         show_text = "Input count of money!"
-    else:
+    elif is_number(money[0]) or money[0].isdigit():
         money = money[0]
         text, rubles, penny = task310.solution(money)
         for i in rubles:
@@ -39,8 +47,35 @@ def task_310_page(method: str, path: str, qs: str) -> ResponseT:
             show_penny += f"<h2><p style = 'color:#E6E6FA'>{j}</p></h2>"
 
         show_text += text
+    else:
+        show_rubles = ""
+        show_penny = ""
+        show_text = "Wrong data!"
 
     payload = task.format(show_text=show_text, show_rubles=show_rubles, show_penny=show_penny)
+
+    return status, content_type, payload
+
+
+def task_311_page(method: str, path: str, qs: str) -> ResponseT:
+    status = "200 OK"
+    content_type = "text/html"
+
+    qsi = parse_qs(qs)
+
+    task = read_tasks("lesson3/task_311.html")
+    gmail = qsi.get("gmail")
+
+    if not gmail:
+        show_text = "Input your Gmail!"
+    else:
+        gmail = gmail[0]
+        done_address = task311.solution(gmail)
+        if done_address:
+            show_text = gmail
+        else:
+            show_text = "DOMAIN NAME is not supported"
+    payload = task.format(show_text=show_text)
 
     return status, content_type, payload
 
@@ -94,6 +129,7 @@ HANDLERS = {
     '/tasks/': tasks_page,
     '/tasks/lesson3/': lesson3_page,
     '/tasks/lesson3/task310/': task_310_page,
+    '/tasks/lesson3/task311/': task_311_page,
 }
 
 
