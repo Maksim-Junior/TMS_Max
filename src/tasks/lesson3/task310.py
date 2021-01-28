@@ -22,16 +22,28 @@ def divide_into_rubles_and_penny(count_of_many):
     }
     if "." not in count_of_many:
         count_of_many += ".0"
+    result_count_of_many = ""
+    for i in count_of_many:
+        if i == ",":
+            i = "."
+        result_count_of_many += i
+    count_of_many = result_count_of_many
 
     rubles_and_penny = count_of_many.split(".")
 
     if len(rubles_and_penny[1]) == 1:
         rubles_and_penny[1] += "0"
-    elif rubles_and_penny[1][0] == "0" and rubles_and_penny[1][1] != 0:
+    elif len(rubles_and_penny[1]) == 2 and rubles_and_penny[1][0] == "0" and rubles_and_penny[1][1] != 0:
         rubles_and_penny[1] = rubles_and_penny[1][1]
 
     rub = int(rubles_and_penny[0])
-    pen = int(rubles_and_penny[1])
+    pen = rubles_and_penny[1]
+
+    if len(pen) > 2:
+        rub += int(pen[:-2])
+        pen = pen[-2:]
+
+    pen = int(pen)
     your_many = f"{rub} rubles and {pen} penny!"
 
     for key in rubles:
@@ -45,6 +57,18 @@ def divide_into_rubles_and_penny(count_of_many):
             pen -= key * (pen // key)
 
     return your_many, count_of_rubles, count_of_penny
+
+
+def ask_user_about_many() -> str:
+    count_of_many = (input("Enter count of many --> "))
+
+    return count_of_many
+
+
+def solution(count_of_many: str):
+    text, rubles, penny = divide_into_rubles_and_penny(count_of_many)
+
+    return text, rubles, penny
 
 
 def main():

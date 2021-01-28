@@ -1,39 +1,125 @@
+from typing import Tuple, Callable
+from urllib.parse import parse_qs
+
 import sentry_sdk
 
-from framework.dirs import DIR_SRC
+from framework.dirs import DIR_SRC, DIR_TASKS
 from framework.util.settings import get_setting
+from tasks.lesson3 import task310
 
 sentry_sdk.init(get_setting("SENTRY_DSN"), traces_sample_rate=1.0)
 
+ResponseT = Tuple[str, str, str]
+
+
+def task_310_page(method: str, path: str, qs: str) -> ResponseT:
+    status = "200 OK"
+    content_type = "text/html"
+
+    qsi = parse_qs(qs)
+
+    task = read_tasks("lesson3/task_310.html")
+    many = qsi.get("many")
+
+    show_rubles = ""
+    show_penny = ""
+    show_text = ""
+
+    if not many:
+        show_rubles = ""
+        show_penny = ""
+        show_text = "Input count of many!"
+    else:
+        many = many[0]
+        text, rubles, penny = task310.solution(many)
+        for i in rubles:
+            show_rubles += f"<h2><p style = 'color:#E6E6FA'>{i}</p></h2>"
+
+        for j in penny:
+            show_penny += f"<h2><p style = 'color:#E6E6FA'>{j}</p></h2>"
+
+        show_text += text
+
+    payload = task.format(show_text=show_text, show_rubles=show_rubles, show_penny=show_penny)
+
+    return status, content_type, payload
+
+
+def division_zero_page(method: str, path: str, qs: str) -> ResponseT:
+    status = "500 Internal Server Error"
+    content_type = "text/html"
+    payload = str(1 / 0)
+    return status, content_type, payload
+
+
+def not_found_page(method: str, path: str, qs: str) -> ResponseT:
+    status = "404 not found"
+    content_type = "text/html"
+    payload = read_template("notFound.html")
+    return status, content_type, payload
+
+
+def index_page(method: str, path: str, qs: str) -> ResponseT:
+    status = "200 OK"
+    content_type = "text/html"
+    payload = read_template("index.html")
+    return status, content_type, payload
+
+
+def environ_page(method: str, path: str, qs: str) -> ResponseT:
+    status = "200 OK"
+    content_type = "text/html"
+    payload = read_template("environ.html")
+    return status, content_type, payload
+
+
+def tasks_page(method: str, path: str, qs: str) -> ResponseT:
+    status = "200 OK"
+    content_type = "text/html"
+    payload = read_tasks("tasks.html")
+    return status, content_type, payload
+
+
+def lesson3_page(method: str, path: str, qs: str) -> ResponseT:
+    status = "200 OK"
+    content_type = "text/html"
+    payload = read_tasks("lesson3.html")
+    return status, content_type, payload
+
+
+HANDLERS = {
+    '/': index_page,
+    '/environ/': environ_page,
+    '/e/': division_zero_page,
+    '/tasks/': tasks_page,
+    '/tasks/lesson3/': lesson3_page,
+    '/tasks/lesson3/task310/': task_310_page,
+}
+
 
 def application(environ, start_response):
-
-    status = "200 OK"
+    method = environ["REQUEST_METHOD"]
+    path = environ["PATH_INFO"]
+    query_string = environ["QUERY_STRING"]
 
     headers = {
         "Content-type": "text/html",
     }
 
-    handlers = {
-        '/': index_page,
-        '/environ/': environ_page,
-        '/e/': division_zero_page,
-    }
+    web_page = HANDLERS.get(path, not_found_page)
 
-    path = extract_path(environ)
-
-    web_page = handlers.get(path, not_found_page)
+    status, content_type, payload = web_page(method, path, query_string)
 
     show_environ = environ_formation(environ)
 
     start_response(status, list(headers.items()))
 
-    show_web_page = web_page().format(environ=show_environ).encode()
+    show_web_page = payload.format(environ=show_environ).encode()
 
     yield show_web_page
 
 
-def environ_formation(environ: dict):
+def environ_formation(environ: dict) -> str:
     show_environ = ""
     for key, value in environ.items():
         show_environ += (f"<p style = 'color:#E6E6FA'>{key}:"
@@ -43,24 +129,15 @@ def environ_formation(environ: dict):
     return show_environ
 
 
-def extract_path(environ: dict) -> str:
-    return environ["PATH_INFO"]
+def read_tasks(task_name: str) -> str:
+    task = DIR_TASKS / task_name
 
+    assert task.is_file()
 
-def division_zero_page():
-    return 1 / 0
+    with task.open("r") as tsk:
+        content_task = tsk.read()
 
-
-def not_found_page() -> str:
-    return read_template("notFound.html")
-
-
-def index_page() -> str:
-    return read_template("index.html")
-
-
-def environ_page() -> str:
-    return read_template("environ.html")
+    return content_task
 
 
 def read_template(template_name: str) -> str:
