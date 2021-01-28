@@ -5,7 +5,7 @@ import sentry_sdk
 
 from framework.dirs import DIR_SRC, DIR_TASKS
 from framework.util.settings import get_setting
-from tasks.lesson3 import task310, task311
+from tasks.lesson3 import task310, task311, task306
 
 sentry_sdk.init(get_setting("SENTRY_DSN"), traces_sample_rate=1.0)
 
@@ -18,6 +18,25 @@ def is_number(s):
         return True
     except ValueError:
         return False
+
+
+def task_306_page(method: str, path: str, qs: str) -> ResponseT:
+    status = "200 OK"
+    content_type = "text/html"
+
+    qsi = parse_qs(qs)
+
+    task = read_tasks("lesson3/task_306.html")
+    age = qsi.get("age")
+
+    if not age:
+        age_control = "Input your age!"
+    else:
+        age_control = task306.solution(age[0])
+
+    payload = task.format(show_text=age_control)
+
+    return status, content_type, payload
 
 
 def task_310_page(method: str, path: str, qs: str) -> ResponseT:
@@ -140,6 +159,7 @@ HANDLERS = {
     '/e/': division_zero_page,
     '/tasks/': tasks_page,
     '/tasks/lesson3/': lesson3_page,
+    '/tasks/lesson3/task306/': task_306_page,
     '/tasks/lesson3/task310/': task_310_page,
     '/tasks/lesson3/task311/': task_311_page,
 }
