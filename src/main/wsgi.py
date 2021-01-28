@@ -19,19 +19,19 @@ def task_310_page(method: str, path: str, qs: str) -> ResponseT:
     qsi = parse_qs(qs)
 
     task = read_tasks("lesson3/task_310.html")
-    many = qsi.get("many")
+    money = qsi.get("money")
 
     show_rubles = ""
     show_penny = ""
     show_text = ""
 
-    if not many:
+    if not money:
         show_rubles = ""
         show_penny = ""
-        show_text = "Input count of many!"
+        show_text = "Input count of money!"
     else:
-        many = many[0]
-        text, rubles, penny = task310.solution(many)
+        money = money[0]
+        text, rubles, penny = task310.solution(money)
         for i in rubles:
             show_rubles += f"<h2><p style = 'color:#E6E6FA'>{i}</p></h2>"
 
