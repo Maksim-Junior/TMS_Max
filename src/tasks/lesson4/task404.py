@@ -6,7 +6,7 @@ def solution(integer):
         while counter <= integer:
             sum_cubes += counter ** 3
             counter += 1
-            answer = "--> " + str(sum_cubes)
+        answer = "--> " + str(sum_cubes)
         return answer
     except ValueError:
         answer = "Wrong data"
