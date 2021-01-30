@@ -1,11 +1,12 @@
-from typing import Tuple, Callable
+from typing import Tuple
 from urllib.parse import parse_qs
 
 import sentry_sdk
 
 from framework.dirs import DIR_SRC, DIR_TASKS
 from framework.util.settings import get_setting
-from tasks.lesson3 import task310, task311, task306
+from tasks.lesson3 import task310, task311, task306, task307, task308
+from tasks.lesson4 import task404
 
 sentry_sdk.init(get_setting("SENTRY_DSN"), traces_sample_rate=1.0)
 
@@ -18,6 +19,20 @@ def is_number(s):
         return True
     except ValueError:
         return False
+
+
+def tasks_page(method: str, path: str, qs: str) -> ResponseT:
+    status = "200 OK"
+    content_type = "text/html"
+    payload = read_tasks("tasks.html")
+    return status, content_type, payload
+
+
+def lesson3_page(method: str, path: str, qs: str) -> ResponseT:
+    status = "200 OK"
+    content_type = "text/html"
+    payload = read_tasks("lesson3/lesson3.html")
+    return status, content_type, payload
 
 
 def task_306_page(method: str, path: str, qs: str) -> ResponseT:
@@ -35,6 +50,48 @@ def task_306_page(method: str, path: str, qs: str) -> ResponseT:
         age_control = task306.solution(age[0])
 
     payload = task.format(show_text=age_control)
+
+    return status, content_type, payload
+
+
+def task_307_page(method: str, path: str, qs: str) -> ResponseT:
+    status = "200 OK"
+    content_type = "text/html"
+
+    qsi = parse_qs(qs)
+
+    task = read_tasks("lesson3/task_307.html")
+    string = qsi.get("string")
+
+    if not string:
+        text = "Input string..."
+    else:
+        text = task307.solution(string[0])
+
+    payload = task.format(show_text=text)
+
+    return status, content_type, payload
+
+
+def task_308_page(method: str, path: str, qs: str) -> ResponseT:
+    status = "200 OK"
+    content_type = "text/html"
+
+    qsi = parse_qs(qs)
+
+    task = read_tasks("lesson3/task_308.html")
+    digit = qsi.get("digit")
+
+    if not digit:
+        text = "Input digit..."
+    else:
+        cube_digit = task308.solution(digit[0])
+        if cube_digit[-1] == "0":
+            text = cube_digit[:-2]
+        else:
+            text = cube_digit
+
+    payload = task.format(show_text=text)
 
     return status, content_type, payload
 
@@ -111,6 +168,32 @@ def task_311_page(method: str, path: str, qs: str) -> ResponseT:
     return status, content_type, payload
 
 
+def lesson4_page(method: str, path: str, qs: str) -> ResponseT:
+    status = "200 OK"
+    content_type = "text/html"
+    payload = read_tasks("lesson4/lesson4.html")
+    return status, content_type, payload
+
+
+def task_404_page(method: str, path: str, qs: str) -> ResponseT:
+    status = "200 OK"
+    content_type = "text/html"
+
+    qsi = parse_qs(qs)
+
+    task = read_tasks("lesson4/task_404.html")
+    integer = qsi.get("integer")
+
+    if not integer:
+        text = "Input integer..."
+    else:
+        text = task404.solution(integer[0])
+
+    payload = task.format(show_text=text)
+
+    return status, content_type, payload
+
+
 def division_zero_page(method: str, path: str, qs: str) -> ResponseT:
     status = "500 Internal Server Error"
     content_type = "text/html"
@@ -139,20 +222,6 @@ def environ_page(method: str, path: str, qs: str) -> ResponseT:
     return status, content_type, payload
 
 
-def tasks_page(method: str, path: str, qs: str) -> ResponseT:
-    status = "200 OK"
-    content_type = "text/html"
-    payload = read_tasks("tasks.html")
-    return status, content_type, payload
-
-
-def lesson3_page(method: str, path: str, qs: str) -> ResponseT:
-    status = "200 OK"
-    content_type = "text/html"
-    payload = read_tasks("lesson3.html")
-    return status, content_type, payload
-
-
 HANDLERS = {
     '/': index_page,
     '/environ/': environ_page,
@@ -160,8 +229,12 @@ HANDLERS = {
     '/tasks/': tasks_page,
     '/tasks/lesson3/': lesson3_page,
     '/tasks/lesson3/task306/': task_306_page,
+    '/tasks/lesson3/task307/': task_307_page,
+    '/tasks/lesson3/task308/': task_308_page,
     '/tasks/lesson3/task310/': task_310_page,
     '/tasks/lesson3/task311/': task_311_page,
+    '/tasks/lesson4/': lesson4_page,
+    '/tasks/lesson4/task404/': task_404_page,
 }
 
 
