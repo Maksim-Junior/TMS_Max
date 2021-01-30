@@ -2,7 +2,8 @@ def solution(digit):
     try:
         float_digit = float(digit)
         cube_digit = float_digit ** 3
-        answer = str(round(cube_digit, 2))
+        str_cube = str(round(cube_digit, 2))
+        answer = f"--> {str_cube}"
         return answer
     except ValueError:
         answer = "Wrong input!"
