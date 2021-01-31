@@ -74,7 +74,7 @@ def task_307_page(method: str, path: str, qs: str) -> ResponseT:
 
 
 def task_308_page(method: str, path: str, qs: str) -> ResponseT:
-    status = "200 OK"
+    status =    "200 OK"
     content_type = "text/html"
 
     qsi = parse_qs(qs)
