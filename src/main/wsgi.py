@@ -7,6 +7,7 @@ from framework.dirs import DIR_SRC, DIR_TASKS
 from framework.util.settings import get_setting
 from tasks.lesson3 import task310, task311, task306, task307, task308
 from tasks.lesson4 import task404, task406, task407
+from tasks.lesson5 import task501
 
 sentry_sdk.init(get_setting("SENTRY_DSN"), traces_sample_rate=1.0)
 
@@ -74,7 +75,7 @@ def task_307_page(method: str, path: str, qs: str) -> ResponseT:
 
 
 def task_308_page(method: str, path: str, qs: str) -> ResponseT:
-    status =    "200 OK"
+    status = "200 OK"
     content_type = "text/html"
 
     qsi = parse_qs(qs)
@@ -244,6 +245,40 @@ def task_407_page(method: str, path: str, qs: str) -> ResponseT:
     return status, content_type, payload
 
 
+def lesson5_page(method: str, path: str, qs: str) -> ResponseT:
+    status = "200 OK"
+    content_type = "text/html"
+    payload = read_tasks("lesson5/lesson5.html")
+    return status, content_type, payload
+
+
+def task_501_page(method: str, path: str, qs: str) -> ResponseT:
+    status = "200 OK"
+    content_type = "text/html"
+
+    qsi = parse_qs(qs)
+
+    task = read_tasks("lesson5/task_501.html")
+    dimension = qsi.get("dimension")
+
+    if not dimension:
+        text = "Input matrix dimension..."
+        matrix = ""
+    else:
+        my_matrix = task501.solution(dimension[0])
+        if type(my_matrix) is list:
+            matrix = ""
+            text = "matrix:"
+            for i in my_matrix:
+                matrix += f"<h2 style = 'color:#FFA07A;font-family: courier, monospace;'>{i[0]}</h2>"
+        else:
+            text = my_matrix
+            matrix = ""
+    payload = task.format(show_text=text, show_matrix=matrix)
+
+    return status, content_type, payload
+
+
 def division_zero_page(method: str, path: str, qs: str) -> ResponseT:
     status = "500 Internal Server Error"
     content_type = "text/html"
@@ -287,6 +322,8 @@ HANDLERS = {
     '/tasks/lesson4/task404/': task_404_page,
     '/tasks/lesson4/task406/': task_406_page,
     '/tasks/lesson4/task407/': task_407_page,
+    '/tasks/lesson5/': lesson5_page,
+    '/tasks/lesson5/task501/': task_501_page,
 }
 
 
