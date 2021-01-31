@@ -126,7 +126,7 @@ def task_310_page(method: str, path: str, qs: str) -> ResponseT:
         show_rubles = ""
         show_penny = ""
         show_text = "Input count of money!"
-    elif money[0] != wrong_words.get(money[0], False) and is_number(money[0]) or money[0].isdigit():
+    elif money[0] != wrong_words.get(money[0]) and is_number(money[0]) or money[0].isdigit():
         money = money[0]
         text, rubles, penny = task310.solution(money)
         for i in rubles:
