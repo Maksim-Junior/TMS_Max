@@ -6,7 +6,7 @@ import sentry_sdk
 from framework.dirs import DIR_SRC, DIR_TASKS
 from framework.util.settings import get_setting
 from tasks.lesson3 import task310, task311, task306, task307, task308
-from tasks.lesson4 import task404, task406
+from tasks.lesson4 import task404, task406, task407
 
 sentry_sdk.init(get_setting("SENTRY_DSN"), traces_sample_rate=1.0)
 
@@ -217,6 +217,33 @@ def task_406_page(method: str, path: str, qs: str) -> ResponseT:
     return status, content_type, payload
 
 
+def task_407_page(method: str, path: str, qs: str) -> ResponseT:
+    status = "200 OK"
+    content_type = "text/html"
+
+    qsi = parse_qs(qs)
+
+    task = read_tasks("lesson4/task_407.html")
+    integer1 = qsi.get("integer1")
+    integer2 = qsi.get("integer2")
+
+    if not integer1 and not integer2:
+        text = "Input integers..."
+        count = ""
+    elif integer1 and not integer2:
+        text = "Input second integer..."
+        count = ""
+    elif not integer1 and integer2:
+        text = "Input first integer..."
+        count = ""
+    else:
+        text, count = task407.solution(integer1[0], integer2[0])
+
+    payload = task.format(show_text=text, show_count=count)
+
+    return status, content_type, payload
+
+
 def division_zero_page(method: str, path: str, qs: str) -> ResponseT:
     status = "500 Internal Server Error"
     content_type = "text/html"
@@ -259,6 +286,7 @@ HANDLERS = {
     '/tasks/lesson4/': lesson4_page,
     '/tasks/lesson4/task404/': task_404_page,
     '/tasks/lesson4/task406/': task_406_page,
+    '/tasks/lesson4/task407/': task_407_page,
 }
 
 
