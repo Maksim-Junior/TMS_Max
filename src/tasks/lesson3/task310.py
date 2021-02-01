@@ -1,4 +1,4 @@
-def divide_into_rubles_and_penny(count_of_many):
+def divide_into_rubles_and_penny(count_of_money):
     count_of_rubles = []
     count_of_penny = []
     rubles = {
@@ -20,19 +20,35 @@ def divide_into_rubles_and_penny(count_of_many):
         2: "💰 2 penny --> ",
         1: "💰 1 penny --> ",
     }
-    if "." not in count_of_many:
-        count_of_many += ".0"
+    if "." not in count_of_money:
+        count_of_money += ".0"
+    result_count_of_many = ""
+    for i in count_of_money:
+        if i == ",":
+            i = "."
+        result_count_of_many += i
+    count_of_money = result_count_of_many
 
-    rubles_and_penny = count_of_many.split(".")
+    rubles_and_penny = count_of_money.split(".")
+
+    if rubles_and_penny[0][0] == "0":
+        while rubles_and_penny[0][0] != "0":
+            rubles_and_penny[0] = rubles_and_penny[0][1:]
 
     if len(rubles_and_penny[1]) == 1:
         rubles_and_penny[1] += "0"
-    elif rubles_and_penny[1][0] == "0" and rubles_and_penny[1][1] != 0:
+    elif len(rubles_and_penny[1]) == 2 and rubles_and_penny[1][0] == "0" and rubles_and_penny[1][1] != 0:
         rubles_and_penny[1] = rubles_and_penny[1][1]
 
     rub = int(rubles_and_penny[0])
-    pen = int(rubles_and_penny[1])
-    your_many = f"{rub} rubles and {pen} penny!"
+    pen = rubles_and_penny[1]
+
+    if len(pen) > 2:
+        rub += int(pen[:-2])
+        pen = pen[-2:]
+
+    pen = int(pen)
+    your_money = f"{rub} rubles and {pen} penny!"
 
     for key in rubles:
         if rub // key > 0:
@@ -44,12 +60,18 @@ def divide_into_rubles_and_penny(count_of_many):
             count_of_penny.append(penny[key] + str(pen // key))
             pen -= key * (pen // key)
 
-    return your_many, count_of_rubles, count_of_penny
+    return your_money, count_of_rubles, count_of_penny
+
+
+def solution(count_of_money: str):
+    text, rubles, penny = divide_into_rubles_and_penny(count_of_money)
+
+    return text, rubles, penny
 
 
 def main():
-    count_of_many = (input("Enter count of many --> "))
-    done = divide_into_rubles_and_penny(count_of_many)
+    count_of_money = (input("Enter count of many --> "))
+    done = divide_into_rubles_and_penny(count_of_money)
 
     for i in done[1]:
         print(i)
