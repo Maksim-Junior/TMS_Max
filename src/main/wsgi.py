@@ -14,6 +14,14 @@ sentry_sdk.init(get_setting("SENTRY_DSN"), traces_sample_rate=1.0)
 ResponseT = Tuple[str, str, str]
 
 
+def wrong_words(n: str):
+    if n.lower() != "nan" and n.lower() != "inf" and n.lower() != "-inf":
+        answer = True
+    else:
+        answer = False
+    return answer
+
+
 def is_number(s):
     try:
         float(s)
@@ -87,10 +95,7 @@ def task_308_page(method: str, path: str, qs: str) -> ResponseT:
         text = "Input digit..."
     else:
         cube_digit = task308.solution(digit[0])
-        if cube_digit[-1] == "0":
-            text = cube_digit[:-2]
-        else:
-            text = cube_digit
+        text = f"--> {cube_digit}"
 
     payload = task.format(show_text=text)
 
@@ -110,24 +115,11 @@ def task_310_page(method: str, path: str, qs: str) -> ResponseT:
     show_penny = ""
     show_text = ""
 
-    wrong_words = {
-        "nan": "nan",
-        "Nan": "Nan",
-        "nAn": "nAn",
-        "naN": "naN",
-        "NAn": "NAn",
-        "NaN": "NaN",
-        "nAN": "nAN",
-        "NAN": "NAN",
-        "-inf": "-inf",
-        "inf": "inf",
-    }
-
     if not money:
         show_rubles = ""
         show_penny = ""
         show_text = "Input count of money!"
-    elif money[0] != wrong_words.get(money[0]) and is_number(money[0]) or money[0].isdigit():
+    elif wrong_words(money[0]) and is_number(money[0]) or money[0].isdigit():
         money = money[0]
         text, rubles, penny = task310.solution(money)
         for i in rubles:
@@ -231,17 +223,21 @@ def task_407_page(method: str, path: str, qs: str) -> ResponseT:
 
     if not integer1 and not integer2:
         text = "Input integers..."
-        count = ""
+        show_count = ""
     elif integer1 and not integer2:
         text = "Input second integer..."
-        count = ""
+        show_count = ""
     elif not integer1 and integer2:
         text = "Input first integer..."
-        count = ""
+        show_count = ""
     else:
-        text, count = task407.solution(integer1[0], integer2[0])
+        numbers, count = task407.solution(integer1[0], integer2[0])
+        text = ""
+        for i in numbers:
+            text += f"{i} "
+        show_count = f"Count of numbers --> {count}"
 
-    payload = task.format(show_text=text, show_count=count)
+    payload = task.format(show_text=text, show_count=show_count)
 
     return status, content_type, payload
 

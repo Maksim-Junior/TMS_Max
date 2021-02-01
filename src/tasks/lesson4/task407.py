@@ -1,23 +1,19 @@
 def solution(fst_int, scd_int):
-    try:
+    if fst_int.isdigit() and scd_int.isdigit():
         fst_int = int(fst_int)
         scd_int = int(scd_int)
         if fst_int >= scd_int:
             answer = "first integer(A) should be less than second integer(B)..."
             count = ""
-            return answer, count
         else:
-            count = []
-            answer = "--> "
+            answer = []
             for i in range(fst_int, scd_int + 1):
-                answer += f"{str(i)} "
-                count.append(i)
-            count = f"Count of integers --> {str(len(count))}"
-            return answer, count
-    except ValueError:
+                answer.append(i)
+            count = len(answer)
+    else:
         answer = "Wrong data!"
         count = ""
-        return answer, count
+    return answer, count
 
 
 def main():

@@ -1,13 +1,27 @@
-def solution(digit):
+def wrong_words(n: str):
+    if n.lower() != "nan" and n.lower() != "inf" and n.lower() != "-inf":
+        answer = True
+    else:
+        answer = False
+    return answer
+
+
+def is_number(n):
     try:
+        n = float(n)
+        return True
+    except ValueError:
+        return False
+
+
+def solution(digit):
+    if is_number(digit) and wrong_words(digit):
         float_digit = float(digit)
         cube_digit = float_digit ** 3
-        str_cube = str(round(cube_digit, 2))
-        answer = f"--> {str_cube}"
-        return answer
-    except ValueError:
+        answer = round(cube_digit, 2)
+    else:
         answer = "Wrong input!"
-        return answer
+    return answer
 
 
 def main():

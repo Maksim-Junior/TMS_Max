@@ -1,16 +1,15 @@
 def solution(integer):
-    try:
+    if integer.isdigit():
         integer = int(integer)
         counter = 1
         sum_cubes = 0
         while counter <= integer:
             sum_cubes += counter ** 3
             counter += 1
-        answer = "--> " + str(sum_cubes)
-        return answer
-    except ValueError:
+        answer = sum_cubes
+    else:
         answer = "Wrong data"
-        return answer
+    return answer
 
 
 def main():
