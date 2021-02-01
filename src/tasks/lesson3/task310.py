@@ -71,7 +71,7 @@ def solution(count_of_money: str):
 
 def main():
     count_of_money = (input("Enter count of many --> "))
-    done = divide_into_rubles_and_penny(count_of_money)
+    done, b, f = divide_into_rubles_and_penny(count_of_money)
 
     for i in done[1]:
         print(i)
@@ -79,7 +79,7 @@ def main():
     for j in done[2]:
         print(j)
 
-    return done[0]
+    return done, b, f
 
 
 if __name__ == "__main__":
