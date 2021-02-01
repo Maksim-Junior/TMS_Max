@@ -120,6 +120,7 @@ def task_310_page(method: str, path: str, qs: str) -> ResponseT:
         "nAN": "nAN",
         "NAN": "NAN",
         "-inf": "-inf",
+        "inf": "inf",
     }
 
     if not money:
