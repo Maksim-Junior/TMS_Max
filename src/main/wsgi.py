@@ -232,10 +232,14 @@ def task_407_page(method: str, path: str, qs: str) -> ResponseT:
         show_count = ""
     else:
         numbers, count = task407.solution(integer1[0], integer2[0])
-        text = ""
-        for i in numbers:
-            text += f"{i} "
-        show_count = f"Count of numbers --> {count}"
+        if type(numbers) is list:
+            text = ""
+            for i in numbers:
+                text += f"{i} "
+            show_count = f"Count of numbers --> {count}"
+        else:
+            text = numbers
+            show_count = count
 
     payload = task.format(show_text=text, show_count=show_count)
 
