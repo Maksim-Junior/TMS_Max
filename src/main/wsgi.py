@@ -271,7 +271,7 @@ def task_501_page(method: str, path: str, qs: str) -> ResponseT:
             matrix = ""
             text = "matrix:"
             for i in my_matrix:
-                matrix += f"<h2 style = 'color:#FFA07A;font-family: courier, monospace;'>{i[0]}</h2>"
+                matrix += f"<h2 style = 'color:#FFA07A;font-family: courier, monospace;'>{i}</h2>"
         else:
             text = my_matrix
             matrix = ""
@@ -294,12 +294,13 @@ def task_502_page(method: str, path: str, qs: str) -> ResponseT:
         matrix = ""
         sum_text = ""
     else:
-        my_matrix, sum_text = task502.solution(dimension[0])
+        my_matrix, sum_elem = task502.solution(dimension[0])
         if type(my_matrix) is list:
             matrix = ""
             text = "matrix:"
+            sum_text = f"Sum elements --> {sum_elem}"
             for i in my_matrix:
-                matrix += f"<h2 style = 'color:#FFA07A;font-family: courier, monospace;'>{i[0]}</h2>"
+                matrix += f"<h2 style = 'color:#FFA07A;font-family: courier, monospace;'>{i}</h2>"
         else:
             text = my_matrix
             matrix = ""

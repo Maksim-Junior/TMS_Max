@@ -2,15 +2,15 @@ from random import randint
 
 
 def solution(dimension):
-    try:
+    if dimension.isdigit():
         dimension = int(dimension)
         matrix = []
         for i in range(dimension):
-            matrix.append([""])
+            matrix.append([])
             for j in range(dimension):
-                matrix[i][0] += f"{str(randint(1, 9))} "
+                matrix[i].append(randint(1, 9))
         return matrix
-    except ValueError:
+    else:
         matrix = "Wrong input!"
         return matrix
 

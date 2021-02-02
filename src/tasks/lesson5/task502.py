@@ -1,34 +1,47 @@
 from random import randint
 
 
-def solution(dimension):
-    try:
+def sum_elements(matrix: list) -> int:
+    if type(matrix) == list:
+        calculate = 0
+        for i in matrix:
+            if type(i) == list:
+                for j in i:
+                    if type(j) == int:
+                        if j % 3 == 0:
+                            calculate += j
+                    else:
+                        calculate = ""
+            else:
+                calculate = ""
+    else:
+        calculate = ""
+
+    return calculate
+
+
+def solution(dimension: str) -> tuple:
+    if dimension.isdigit():
         dimension = int(dimension)
-        digits_of_matrix = []
         matrix = []
         for i in range(dimension):
-            matrix.append([""])
+            matrix.append([])
             for j in range(dimension):
-                a = randint(1, 9)
-                matrix[i][0] += f"{str(a)} "
-                digits_of_matrix.append(a)
-        sum_digits = 0
-        for elem in digits_of_matrix:
-            if elem % 3 == 0:
-                sum_digits += elem
-        text_sum = f"Sum elements --> {sum_digits}"
-        return matrix, text_sum
-    except ValueError:
+                matrix[i].append(randint(1, 9))
+
+        sum_elem = sum_elements(matrix)
+    else:
         matrix = "Wrong input!"
-        text_sum = ""
-        return matrix, text_sum
+        sum_elem = ""
+
+    return matrix, sum_elem
 
 
 def main():
     dimension = input("Enter matrix dimension --> ")
-    matrix, sum_elements = solution(dimension)
+    matrix, sum_el = solution(dimension)
 
-    return matrix, sum_elements
+    return matrix, sum_el
 
 
 if __name__ == "__main__":
