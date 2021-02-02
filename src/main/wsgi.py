@@ -304,6 +304,7 @@ def task_502_page(method: str, path: str, qs: str) -> ResponseT:
         else:
             text = my_matrix
             matrix = ""
+            sum_text = sum_elem
     payload = task.format(show_text=text, show_matrix=matrix, show_sum=sum_text)
 
     return status, content_type, payload
