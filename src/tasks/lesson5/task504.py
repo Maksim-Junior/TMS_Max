@@ -1,42 +1,56 @@
 from random import randint
 
 
+def count_elements(matrix):
+    if type(matrix) == list:
+        calculate = 0
+        counter = 0
+        for i in matrix:
+            if type(i) == list:
+                for j in i:
+                    if type(j) == int:
+                        counter += j
+                    else:
+                        calculate = ""
+            else:
+                calculate = ""
+
+        average_value = counter / (len(matrix) * len(matrix[0]))
+        if type(average_value) == float and average_value >= 1:
+            for line in range(len(matrix)):
+                for column in range(len(matrix[0])):
+                    sum_inx = line + column
+                    if float(matrix[line][column]) > average_value and sum_inx > 0 and sum_inx % 2 == 0:
+                        calculate += 1
+    else:
+        calculate = ""
+
+    return calculate
+
+
 def solution(matrix_n, matrix_m):
-    try:
+    if matrix_n.isdigit() and matrix_m.isdigit():
         matrix_n = int(matrix_n)
         matrix_m = int(matrix_m)
-        web_matrix = []
         my_matrix = []
         for i in range(matrix_n):
-            web_matrix.append([""])
             my_matrix.append([])
             for j in range(matrix_m):
-                a = randint(1, 9)
-                web_matrix[i][0] += f"{str(a)} "
-                my_matrix[i].append(a)
-        count = 0
-        for line in my_matrix:
-            for elem_line in line:
-                count += elem_line
-        average_value = count / (matrix_n * matrix_m)
+                my_matrix[i].append(randint(1, 9))
 
-        count_of_digits = 0
-        for line_el in range(matrix_n):
-            for column_el in range(matrix_m):
-                if float(my_matrix[line_el][column_el]) > average_value and (line_el + column_el) % 2 == 0:
-                    count_of_digits += 1
-        text_digits = f"Count of elements --> {count_of_digits} "
-        return web_matrix, text_digits
-    except ValueError:
-        web_matrix = "Wrong input!"
-        text_digits = ""
+        count = count_elements(my_matrix)
+    else:
+        my_matrix = "Wrong input!"
+        count = ""
 
-        return web_matrix, text_digits
+    return my_matrix, count
 
 
 def main():
     matrix_n = input("Enter number of lines --> ")
     matrix_m = input("Enter number of columns --> ")
+
+
 
     web_matrix, text_digits = solution(matrix_n, matrix_m)
 

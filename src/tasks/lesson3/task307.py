@@ -1,6 +1,6 @@
 def solution(string):
     if len(string) > 5:
-        answer = f'"{string}"'
+        answer = f"{string}"
     elif len(string) < 5:
         answer = "Need more!"
     else:

@@ -1,8 +1,8 @@
-def solution(gmail: str) -> bool:
+def solution(gmail: str) -> str:
     if gmail[-10:] == "@gmail.com":
-        address = True
+        address = gmail
     else:
-        address = False
+        address = "DOMAIN NAME is not supported"
 
     return address
 
@@ -10,12 +10,8 @@ def solution(gmail: str) -> bool:
 def main():
     gmail = input("Enter your gmail address --> ")
     done_address = solution(gmail)
-    if done_address:
-        text = gmail
-    else:
-        text = "DOMAIN NAME is not supported"
 
-    return text
+    return done_address
 
 
 if __name__ == "__main__":

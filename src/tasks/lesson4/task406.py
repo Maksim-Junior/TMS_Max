@@ -1,19 +1,17 @@
 def solution(first_digit, second_digit):
-    try:
+    if first_digit.isdigit() and second_digit.isdigit():
         fd = int(first_digit)
         sd = int(second_digit)
         if fd > sd:
             answer = "first digit(n) should be less than second digit(m)..."
-            return answer
         else:
             sum_cubes = 0
             for i in range(fd, sd + 1):
                 sum_cubes += i ** 3
-            answer = "--> " + str(sum_cubes)
-            return answer
-    except ValueError:
+            answer = sum_cubes
+    else:
         answer = "Wrong data!"
-        return answer
+    return answer
 
 
 def main():

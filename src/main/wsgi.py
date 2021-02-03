@@ -14,6 +14,14 @@ sentry_sdk.init(get_setting("SENTRY_DSN"), traces_sample_rate=1.0)
 ResponseT = Tuple[str, str, str]
 
 
+def wrong_words(n: str):
+    if n.lower() != "nan" and n.lower() != "inf" and n.lower() != "-inf":
+        answer = True
+    else:
+        answer = False
+    return answer
+
+
 def is_number(s):
     try:
         float(s)
@@ -87,10 +95,7 @@ def task_308_page(method: str, path: str, qs: str) -> ResponseT:
         text = "Input digit..."
     else:
         cube_digit = task308.solution(digit[0])
-        if cube_digit[-1] == "0":
-            text = cube_digit[:-2]
-        else:
-            text = cube_digit
+        text = f"--> {cube_digit}"
 
     payload = task.format(show_text=text)
 
@@ -110,23 +115,11 @@ def task_310_page(method: str, path: str, qs: str) -> ResponseT:
     show_penny = ""
     show_text = ""
 
-    wrong_words = {
-        "nan": "nan",
-        "Nan": "Nan",
-        "nAn": "nAn",
-        "naN": "naN",
-        "NAn": "NAn",
-        "NaN": "NaN",
-        "nAN": "nAN",
-        "NAN": "NAN",
-        "-inf": "-inf",
-    }
-
     if not money:
         show_rubles = ""
         show_penny = ""
         show_text = "Input count of money!"
-    elif money[0] != wrong_words.get(money[0]) and is_number(money[0]) or money[0].isdigit():
+    elif wrong_words(money[0]) and is_number(money[0]) or money[0].isdigit():
         money = money[0]
         text, rubles, penny = task310.solution(money)
         for i in rubles:
@@ -230,17 +223,25 @@ def task_407_page(method: str, path: str, qs: str) -> ResponseT:
 
     if not integer1 and not integer2:
         text = "Input integers..."
-        count = ""
+        show_count = ""
     elif integer1 and not integer2:
         text = "Input second integer..."
-        count = ""
+        show_count = ""
     elif not integer1 and integer2:
         text = "Input first integer..."
-        count = ""
+        show_count = ""
     else:
-        text, count = task407.solution(integer1[0], integer2[0])
+        numbers, count = task407.solution(integer1[0], integer2[0])
+        if type(numbers) is list:
+            text = ""
+            for i in numbers:
+                text += f"{i} "
+            show_count = f"Count of numbers --> {count}"
+        else:
+            text = numbers
+            show_count = count
 
-    payload = task.format(show_text=text, show_count=count)
+    payload = task.format(show_text=text, show_count=show_count)
 
     return status, content_type, payload
 
@@ -270,7 +271,7 @@ def task_501_page(method: str, path: str, qs: str) -> ResponseT:
             matrix = ""
             text = "matrix:"
             for i in my_matrix:
-                matrix += f"<h2 style = 'color:#FFA07A;font-family: courier, monospace;'>{i[0]}</h2>"
+                matrix += f"<h2 style = 'color:#FFA07A;font-family: courier, monospace;'>{i}</h2>"
         else:
             text = my_matrix
             matrix = ""
@@ -293,15 +294,17 @@ def task_502_page(method: str, path: str, qs: str) -> ResponseT:
         matrix = ""
         sum_text = ""
     else:
-        my_matrix, sum_text = task502.solution(dimension[0])
+        my_matrix, sum_elem = task502.solution(dimension[0])
         if type(my_matrix) is list:
             matrix = ""
             text = "matrix:"
+            sum_text = f"Sum elements --> {sum_elem}"
             for i in my_matrix:
-                matrix += f"<h2 style = 'color:#FFA07A;font-family: courier, monospace;'>{i[0]}</h2>"
+                matrix += f"<h2 style = 'color:#FFA07A;font-family: courier, monospace;'>{i}</h2>"
         else:
             text = my_matrix
             matrix = ""
+            sum_text = sum_elem
     payload = task.format(show_text=text, show_matrix=matrix, show_sum=sum_text)
 
     return status, content_type, payload
@@ -331,14 +334,16 @@ def task_503_page(method: str, path: str, qs: str) -> ResponseT:
         matrix = ""
         sum_seven = ""
     else:
-        my_matrix, sum_seven = task503.solution(mass_n[0], mass_m[0])
+        my_matrix, count_seven = task503.solution(mass_n[0], mass_m[0])
         if type(my_matrix) is list:
             matrix = ""
             text = "matrix:"
+            sum_seven = f"Count of seven --> {count_seven}"
             for i in my_matrix:
-                matrix += f"<h2 style = 'color:#FFA07A;font-family: courier, monospace;'>{i[0]}</h2>"
+                matrix += f"<h2 style = 'color:#FFA07A;font-family: courier, monospace;'>{i}</h2>"
         else:
             text = my_matrix
+            sum_seven = count_seven
             matrix = ""
     payload = task.format(show_text=text, show_matrix=matrix, show_seven=sum_seven)
 
@@ -369,14 +374,16 @@ def task_504_page(method: str, path: str, qs: str) -> ResponseT:
         matrix = ""
         count_digits = ""
     else:
-        my_matrix, count_digits = task504.solution(matrix_n[0], matrix_m[0])
+        my_matrix, count = task504.solution(matrix_n[0], matrix_m[0])
         if type(my_matrix) is list:
             matrix = ""
+            count_digits = f"Count of digits --> {count}"
             text = "matrix:"
             for i in my_matrix:
-                matrix += f"<h2 style = 'color:#FFA07A;font-family: courier, monospace;'>{i[0]}</h2>"
+                matrix += f"<h2 style = 'color:#FFA07A;font-family: courier, monospace;'>{i}</h2>"
         else:
             text = my_matrix
+            count_digits = count
             matrix = ""
     payload = task.format(show_text=text, show_matrix=matrix, show_count=count_digits)
 
