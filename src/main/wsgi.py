@@ -334,14 +334,16 @@ def task_503_page(method: str, path: str, qs: str) -> ResponseT:
         matrix = ""
         sum_seven = ""
     else:
-        my_matrix, sum_seven = task503.solution(mass_n[0], mass_m[0])
+        my_matrix, count_seven = task503.solution(mass_n[0], mass_m[0])
         if type(my_matrix) is list:
             matrix = ""
             text = "matrix:"
+            sum_seven = f"Count of seven --> {count_seven}"
             for i in my_matrix:
-                matrix += f"<h2 style = 'color:#FFA07A;font-family: courier, monospace;'>{i[0]}</h2>"
+                matrix += f"<h2 style = 'color:#FFA07A;font-family: courier, monospace;'>{i}</h2>"
         else:
             text = my_matrix
+            sum_seven = count_seven
             matrix = ""
     payload = task.format(show_text=text, show_matrix=matrix, show_seven=sum_seven)
 
@@ -372,14 +374,16 @@ def task_504_page(method: str, path: str, qs: str) -> ResponseT:
         matrix = ""
         count_digits = ""
     else:
-        my_matrix, count_digits = task504.solution(matrix_n[0], matrix_m[0])
+        my_matrix, count = task504.solution(matrix_n[0], matrix_m[0])
         if type(my_matrix) is list:
             matrix = ""
+            count_digits = f"Count of digits --> {count}"
             text = "matrix:"
             for i in my_matrix:
-                matrix += f"<h2 style = 'color:#FFA07A;font-family: courier, monospace;'>{i[0]}</h2>"
+                matrix += f"<h2 style = 'color:#FFA07A;font-family: courier, monospace;'>{i}</h2>"
         else:
             text = my_matrix
+            count_digits = count
             matrix = ""
     payload = task.format(show_text=text, show_matrix=matrix, show_count=count_digits)
 

@@ -1,28 +1,41 @@
 from random import randint
 
 
+def count_of_seven(matrix: list) -> int:
+    if type(matrix) == list:
+        calculate = 0
+        for i in matrix:
+            if type(i) == list:
+                for j in i:
+                    if type(j) == int:
+                        if j == 7:
+                            calculate += 1
+                    else:
+                        calculate = ""
+            else:
+                calculate = ""
+    else:
+        calculate = ""
+
+    return calculate
+
+
 def solution(mass_n, mass_m):
-    try:
+    if mass_n.isdigit() and mass_m.isdigit():
         mass_n = int(mass_n)
         mass_m = int(mass_m)
-        digits_of_matrix = []
         matrix = []
         for i in range(mass_n):
-            matrix.append([""])
+            matrix.append([])
             for j in range(mass_m):
-                a = randint(1, 9)
-                matrix[i][0] += f"{str(a)} "
-                digits_of_matrix.append(a)
-        number_seven = 0
-        for elem in digits_of_matrix:
-            if elem == 7:
-                number_seven += 1
-        text_seven = f"Number of seven --> {number_seven}"
-        return matrix, text_seven
-    except ValueError:
+                matrix[i].append(randint(1, 9))
+
+        count_seven = count_of_seven(matrix)
+    else:
         matrix = "Wrong input!"
-        text_seven = ""
-        return matrix, text_seven
+        count_seven = ""
+
+    return matrix, count_seven
 
 
 def main():
