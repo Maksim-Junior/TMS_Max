@@ -5,6 +5,7 @@ from main.pages.function_for_pages import wrong_words, is_number, read_tasks, re
 from tasks.lesson3 import task306, task307, task308, task310, task311
 from tasks.lesson4 import task404, task406, task407
 from tasks.lesson5 import task501, task502, task503, task504
+from tasks.lesson7 import task702
 
 
 def index_page(request: RequestT) -> ResponseT:
@@ -411,6 +412,73 @@ def task_504_page(request: RequestT) -> ResponseT:
             count_digits = count
             matrix = ""
     payload = task.format(show_text=text, show_matrix=matrix, show_count=count_digits)
+
+    response = ResponseT(status=status, content_type=content_type, payload=payload)
+
+    return response
+
+
+def lesson7_page(request: RequestT) -> ResponseT:
+    status = "200 OK"
+    content_type = "text/html"
+    payload = read_tasks("lesson7/lesson7.html")
+    response = ResponseT(status=status, content_type=content_type, payload=payload)
+
+    return response
+
+
+def task_702_page(request: RequestT) -> ResponseT:
+    status = "200 OK"
+    content_type = "text/html"
+
+    qsi = parse_qs(request.query_string)
+
+    task = read_tasks("lesson7/task_702.html")
+
+    matrix_n = qsi.get("lines_n")
+    matrix_m = qsi.get("columns_m")
+
+    if not matrix_n and not matrix_m:
+        text = "Input dimension(n x m)..."
+        matrix = ""
+        sum_digits = ""
+        max_digit = ""
+        min_digit = ""
+    elif matrix_n and not matrix_m:
+        text = "Input number of columns(m)..."
+        matrix = ""
+        sum_digits = ""
+        max_digit = ""
+        min_digit = ""
+    elif not matrix_n and matrix_m:
+        text = "Input number of lines(n)..."
+        matrix = ""
+        sum_digits = ""
+        max_digit = ""
+        min_digit = ""
+    else:
+        my_matrix, sum_elem, max_elem, min_elem = task702.solution(matrix_n[0], matrix_m[0])
+        if type(my_matrix) is list:
+            matrix = ""
+            sum_digits = f"Sum of digits --> {sum_elem}"
+            max_digit = f"Max digit --> {max_elem}"
+            min_digit = f"Min digit --> {min_elem}"
+            text = "matrix:"
+            for i in my_matrix:
+                matrix += f"<h2 style = 'color:#FFA07A;font-family: courier, monospace;'>{i}</h2>"
+        else:
+            text = my_matrix
+            sum_digits = sum_elem
+            max_digit = max_elem
+            min_digit = min_elem
+            matrix = ""
+    payload = task.format(
+        show_text=text,
+        show_matrix=matrix,
+        show_sum=sum_digits,
+        show_max=max_digit,
+        show_min=min_digit,
+    )
 
     response = ResponseT(status=status, content_type=content_type, payload=payload)
 
