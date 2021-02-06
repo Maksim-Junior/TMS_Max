@@ -41,9 +41,6 @@ def application(environ, start_response):
         path=environ["PATH_INFO"],
         query_string=environ["QUERY_STRING"],
     )
-    headers = {
-        "Content-type": "text/html",
-    }
 
     web_page = HANDLERS.get(request.path, not_found_page)
 
@@ -51,6 +48,10 @@ def application(environ, start_response):
         response = web_page(request)
     except Exception:
         response = error_500_page(request)
+
+    headers = {
+        "Content-type": response.content_type,
+    }
 
     show_environ = environ_formation(environ)
 
