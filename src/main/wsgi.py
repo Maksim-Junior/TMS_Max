@@ -6,7 +6,7 @@ from main.pages.function_for_pages import environ_formation
 from main.pages.system_pages import division_zero_page, not_found_page, error_500_page
 from main.pages.web_pages import tasks_page, lesson3_page, task_306_page, task_307_page, task_308_page, task_310_page, \
     task_311_page, lesson4_page, task_404_page, task_406_page, task_407_page, lesson5_page, task_501_page, \
-    task_502_page, task_503_page, task_504_page, index_page, environ_page, lesson7_page, task_702_page
+    task_502_page, task_503_page, task_504_page, index_page, environ_page, lesson7_page, task_702_page, task_703_page
 
 sentry_sdk.init(get_setting("SENTRY_DSN"), traces_sample_rate=1.0)
 
@@ -32,6 +32,7 @@ HANDLERS = {
     '/tasks/lesson5/task504/': task_504_page,
     '/tasks/lesson7/': lesson7_page,
     '/tasks/lesson5/task702/': task_702_page,
+    '/tasks/lesson5/task703/': task_703_page,
 }
 
 

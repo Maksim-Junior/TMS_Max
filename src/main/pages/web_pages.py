@@ -5,7 +5,7 @@ from main.pages.function_for_pages import wrong_words, is_number, read_tasks, re
 from tasks.lesson3 import task306, task307, task308, task310, task311
 from tasks.lesson4 import task404, task406, task407
 from tasks.lesson5 import task501, task502, task503, task504
-from tasks.lesson7 import task702
+from tasks.lesson7 import task702, task703
 
 
 def index_page(request: RequestT) -> ResponseT:
@@ -479,6 +479,27 @@ def task_702_page(request: RequestT) -> ResponseT:
         show_max=max_digit,
         show_min=min_digit,
     )
+
+    response = ResponseT(status=status, content_type=content_type, payload=payload)
+
+    return response
+
+
+def task_703_page(request: RequestT) -> ResponseT:
+    status = "200 OK"
+    content_type = "text/html"
+
+    qsi = parse_qs(request.query_string)
+
+    task = read_tasks("lesson7/task_703.html")
+    number = qsi.get("number")
+
+    if not number:
+        result = "Input number for find factorial..."
+    else:
+        result = task703.solution(number[0])
+
+    payload = task.format(show_result=result)
 
     response = ResponseT(status=status, content_type=content_type, payload=payload)
 
