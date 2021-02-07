@@ -1,3 +1,34 @@
+from main.custom_types import RequestT, ResponseT
+from main.util import render_template
+
+TEMPLATE = "tasks/lesson4/task_406.html"
+
+
+def handler(request: RequestT) -> ResponseT:
+
+    digit1 = request.query.get("digit1")
+    digit2 = request.query.get("digit2")
+
+    if not digit1 and not digit2:
+        result = "Input digits..."
+    elif digit1 and not digit2:
+        result = "Input second digit..."
+    elif not digit1 and digit2:
+        result = "Input first digit..."
+    else:
+        result = solution(digit1[0], digit2[0])
+
+    context = {
+        "show_text": result
+    }
+
+    document = render_template(TEMPLATE, context)
+
+    response = ResponseT(payload=document)
+
+    return response
+
+
 def solution(first_digit, second_digit):
     if first_digit.isdigit() and second_digit.isdigit():
         fd = int(first_digit)

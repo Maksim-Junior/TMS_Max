@@ -1,5 +1,53 @@
 from random import randint
 
+from main.custom_types import RequestT, ResponseT
+from main.util import render_template
+
+TEMPLATE = "tasks/lesson5/task_503.html"
+
+
+def handler(request: RequestT) -> ResponseT:
+
+    mass_n = request.query.get("lines_n")
+    mass_m = request.query.get("columns_m")
+
+    if not mass_n and not mass_m:
+        text = "Input dimension(n x m)..."
+        matrix = ""
+        sum_seven = ""
+    elif mass_n and not mass_m:
+        text = "Input number of columns(m)..."
+        matrix = ""
+        sum_seven = ""
+    elif not mass_n and mass_m:
+        text = "Input number of lines(n)..."
+        matrix = ""
+        sum_seven = ""
+    else:
+        my_matrix, count_seven = solution(mass_n[0], mass_m[0])
+        if type(my_matrix) is list:
+            matrix = ""
+            text = "matrix:"
+            sum_seven = f"Count of seven --> {count_seven}"
+            for i in my_matrix:
+                matrix += f"<h2 style = 'color:#FFA07A;font-family: courier, monospace;'>{i}</h2>"
+        else:
+            text = my_matrix
+            sum_seven = count_seven
+            matrix = ""
+
+    context = {
+        "show_text": text,
+        "show_matrix": matrix,
+        "show_seven": sum_seven,
+    }
+
+    document = render_template(TEMPLATE, context)
+
+    response = ResponseT(payload=document)
+
+    return response
+
 
 def count_of_seven(matrix: list) -> int:
     if type(matrix) == list:
