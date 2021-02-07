@@ -1,30 +1,24 @@
 import traceback
+from http import HTTPStatus
+
 from main.custom_types import ResponseT, RequestT
-from main.pages.function_for_pages import read_template
+from main.util import render_template
+
+TEMPLATE = "notFound.html"
 
 
-def division_zero_page(request: RequestT) -> ResponseT:
-    status = "500 Internal Server Error"
-    content_type = "text/html"
-    payload = str(1 / 0)
-    response = ResponseT(status=status, content_type=content_type, payload=payload)
-
-    return response
-
-
-def not_found_page(request: RequestT) -> ResponseT:
-    status = "404 not found"
-    content_type = "text/html"
-    payload = read_template("notFound.html")
-    response = ResponseT(status=status, content_type=content_type, payload=payload)
+def handle_404(_request: RequestT) -> ResponseT:
+    payload = render_template("notFound.html")
+    response = ResponseT(payload=payload, status=HTTPStatus.NOT_FOUND)
 
     return response
 
 
-def error_500_page(request: RequestT) -> ResponseT:
-    status = "500 Internal Server Error"
-    content_type = "text/plain"
-    payload = traceback.format_exc()
-    response = ResponseT(status=status, content_type=content_type, payload=payload)
+def handle_500(_request: RequestT) -> ResponseT:
+    response = ResponseT(
+        content_type="text/plain",
+        payload=traceback.format_exc(),
+        status=HTTPStatus.INTERNAL_SERVER_ERROR,
+    )
 
     return response

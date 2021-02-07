@@ -1,3 +1,46 @@
+from main.custom_types import RequestT, ResponseT
+from main.util import wrong_words, is_number, render_template
+
+TEMPLATE = "tasks/lesson3/task_310.html"
+
+
+def handler(request: RequestT) -> ResponseT:
+
+    money = request.query.get("money")
+
+    if not money:
+        show_rubles = ""
+        show_penny = ""
+        show_text = "Input count of money!"
+    elif wrong_words(money[0]) and is_number(money[0]) or money[0].isdigit():
+        text, rubles, penny = solution(money[0])
+        show_rubles = ""
+        show_penny = ""
+        for i in rubles:
+            show_rubles += f"<h2><p style = 'color:#E6E6FA'>{i}</p></h2>"
+
+        for j in penny:
+            show_penny += f"<h2><p style = 'color:#E6E6FA'>{j}</p></h2>"
+
+        show_text = text
+    else:
+        show_rubles = ""
+        show_penny = ""
+        show_text = "Wrong data!"
+
+    context = {
+        "show_rubles": show_rubles,
+        "show_penny": show_penny,
+        "show_text": show_text
+    }
+
+    document = render_template(TEMPLATE, context)
+
+    response = ResponseT(payload=document)
+
+    return response
+
+
 def divide_into_rubles_and_penny(count_of_money):
     count_of_rubles = []
     count_of_penny = []

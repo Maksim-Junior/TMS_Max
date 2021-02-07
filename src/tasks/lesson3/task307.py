@@ -1,3 +1,29 @@
+from main.custom_types import RequestT, ResponseT
+from main.util import render_template
+
+TEMPLATE = "tasks/lesson3/task_307.html"
+
+
+def handler(request: RequestT) -> ResponseT:
+
+    string = request.query.get("string")
+
+    if not string:
+        result = "Input string..."
+    else:
+        result = solution(string[0])
+
+    context = {
+        "show_text": result
+    }
+
+    document = render_template(TEMPLATE, context)
+
+    response = ResponseT(payload=document)
+
+    return response
+
+
 def solution(string):
     if len(string) > 5:
         answer = f"{string}"

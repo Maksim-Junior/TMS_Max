@@ -1,17 +1,27 @@
-def wrong_words(n: str):
-    if n.lower() != "nan" and n.lower() != "inf" and n.lower() != "-inf":
-        answer = True
+from main.custom_types import RequestT, ResponseT
+from main.util import is_number, wrong_words, render_template
+
+TEMPLATE = "tasks/lesson3/task_308.html"
+
+
+def handler(request: RequestT) -> ResponseT:
+    digit = request.query.get("digit")
+
+    if not digit:
+        result = "Input digit..."
     else:
-        answer = False
-    return answer
+        cube_digit = solution(digit[0])
+        result = f"--> {cube_digit}"
 
+    context = {
+        "show_text": result
+    }
 
-def is_number(n):
-    try:
-        n = float(n)
-        return True
-    except ValueError:
-        return False
+    document = render_template(TEMPLATE, context)
+
+    response = ResponseT(payload=document)
+
+    return response
 
 
 def solution(digit):
