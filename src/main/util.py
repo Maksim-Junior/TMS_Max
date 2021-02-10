@@ -54,13 +54,17 @@ def build_request(environ: Dict) -> RequestT:
     qs = environ["QUERY_STRING"]
     query = parse_qs(qs)
 
+    headers = {
+        "-".join(w.capitalize() for w in h[5:].split("_")): v
+        for h, v in environ.items()
+        if h.startswith("HTTP_")
+    }
+
     request = RequestT(
         method=environ["REQUEST_METHOD"],
         path=environ["PATH_INFO"],
         query=query,
+        headers=headers
     )
 
     return request
-
-
-

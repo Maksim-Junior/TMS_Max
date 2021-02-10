@@ -20,6 +20,7 @@ def application(environ, start_response):
     headers = {
         "Content-type": response.content_type,
     }
+    headers.update(response.headers)
 
     start_response(
         f"{response.status.value} {response.status.phrase}",
