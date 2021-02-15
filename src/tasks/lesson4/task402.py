@@ -9,7 +9,7 @@ TEMPLATE = "tasks/lesson4/task_402.html"
 
 
 def handler(request: RequestT) -> ResponseT:
-    client_data = request.query.get("number")
+    client_data = request.post_req.get("number")
 
     client_name = get_client(request) or create_new_client()
     if not client_data:
