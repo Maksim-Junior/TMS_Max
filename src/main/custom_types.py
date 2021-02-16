@@ -45,7 +45,8 @@ class RequestT(BaseModel):
 def prepare_kwargs(environ: Dict) -> Dict[str, Any]:
     qs = environ["QUERY_STRING"]
     query = parse_qs(qs)
-    if not environ["CONTENT_LENGTH"]:
+    content_length = environ.get("CONTENT_LENGTH", 0)
+    if content_length == 0:
         environ["CONTENT_LENGTH"] = 0
     request_body_size = int(environ.get("CONTENT_LENGTH", 0)) if environ["CONTENT_LENGTH"] else 0
     req_body = environ["wsgi.input"].read(request_body_size).decode()
