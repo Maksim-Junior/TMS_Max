@@ -9,6 +9,8 @@ def handler(request: RequestT) -> ResponseT:
     client_data = request.post_req.get("number")
 
     client_name = request.cookies["name"].value
+    if not find_task(client_name):
+        add_task(client_name)
     if not client_data:
         result = "Input number..."
     else:
@@ -34,17 +36,19 @@ def handler(request: RequestT) -> ResponseT:
 
 
 def calc_sum(client_name: str) -> int:
-    user_data_file = DIR_STORAGE / f"{client_name}.txt"
-    with user_data_file.open("r") as src:
-        result = sum(int(line.strip()) for line in src.readlines())
+    dict_task = user_tasks_dict(client_name)
+    result = dict_task["task402"]
 
     return result
 
 
 def document_cleaning(client_name: str) -> str:
     user_data_file = DIR_STORAGE / f"{client_name}.txt"
+    dict_task = user_tasks_dict(client_name)
+    dict_task["task402"] = 0
     with user_data_file.open("w") as file:
-        file.close()
+        for key, value in dict_task.items():
+            file.write(f"{key}={value}")
     answer = "The file has been cleared..."
 
     return answer
@@ -52,7 +56,42 @@ def document_cleaning(client_name: str) -> str:
 
 def add_number(client_name: str, number: int) -> int:
     user_data_file = DIR_STORAGE / f"{client_name}.txt"
-    with user_data_file.open("a") as dst:
-        dst.write(f"{number}\n")
+    dict_task = user_tasks_dict(client_name)
+    dict_task["task402"] = int(dict_task["task402"]) + int(number)
+
+    with user_data_file.open("w") as dst:
+        for key, value in dict_task.items():
+            dst.write(f"{key}={value}")
 
     return number
+
+
+def add_task(client_name: str) -> bool:
+    user_data_file = DIR_STORAGE / f"{client_name}.txt"
+    with user_data_file.open("a") as new_task:
+        new_task.write("task402=0")
+
+    return True
+
+
+def user_tasks_dict(client_name: str) -> dict:
+    user_data_file = DIR_STORAGE / f"{client_name}.txt"
+    with user_data_file.open("r") as dst:
+        list_tasks = (line.strip() for line in dst.readlines())
+        dict_task = {}
+        for tasks in list_tasks:
+            key, value = tasks.split("=")
+            dict_task[key] = int(value)
+
+    return dict_task
+
+
+def find_task(client_name: str) -> bool:
+    dict_tasks = user_tasks_dict(client_name)
+    task = dict_tasks.get("task402", "")
+    if task == "":
+        answer = False
+    else:
+        answer = True
+
+    return answer
