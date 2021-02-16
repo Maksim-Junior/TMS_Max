@@ -76,6 +76,10 @@ def add_task(client_name: str) -> bool:
 
 def user_tasks_dict(client_name: str) -> dict:
     user_data_file = DIR_STORAGE / f"{client_name}.txt"
+
+    with user_data_file.open("a"):
+        pass
+
     with user_data_file.open("r") as dst:
         list_tasks = (line.strip() for line in dst.readlines())
         dict_task = {}
