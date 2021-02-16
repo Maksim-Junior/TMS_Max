@@ -1,6 +1,3 @@
-import os
-from typing import Optional
-
 from framework.dirs import DIR_STORAGE
 from main.custom_types import RequestT, ResponseT
 from main.util import render_template
@@ -11,7 +8,7 @@ TEMPLATE = "tasks/lesson4/task_402.html"
 def handler(request: RequestT) -> ResponseT:
     client_data = request.post_req.get("number")
 
-    client_name = get_client(request) or create_new_client()
+    client_name = request.cookies["name"].value
     if not client_data:
         result = "Input number..."
     else:
@@ -25,23 +22,15 @@ def handler(request: RequestT) -> ResponseT:
         else:
             result = "Wrong input!"
 
-    headers = {
-        "Set-Cookie": f"name={client_name}"
-    }
-
     context = {
         "show_text": result
     }
 
     document = render_template(TEMPLATE, context)
 
-    response = ResponseT(headers=headers, payload=document)
+    response = ResponseT(payload=document)
 
     return response
-
-
-def create_new_client() -> str:
-    return os.urandom(8).hex()
 
 
 def calc_sum(client_name: str) -> int:
@@ -67,15 +56,3 @@ def add_number(client_name: str, number: int) -> int:
         dst.write(f"{number}\n")
 
     return number
-
-
-def get_client(request: RequestT) -> Optional[str]:
-    cookies = request.headers.get("Cookie")
-    if not cookies:
-        return None
-
-    cookie_name, cookie_value = cookies.split("=")
-    assert cookie_name == "name"
-    if not cookie_value:
-        return None
-    return cookie_value
