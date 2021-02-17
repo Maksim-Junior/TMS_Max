@@ -1,3 +1,6 @@
+import os
+from typing import Optional
+
 from framework.dirs import DIR_STORAGE
 from main.custom_types import RequestT, ResponseT
 from main.util import render_template
@@ -8,7 +11,13 @@ TEMPLATE = "tasks/lesson4/task_402.html"
 def handler(request: RequestT) -> ResponseT:
     client_data = request.post_req.get("number")
 
-    client_name = request.cookies["name"].value
+    response = ResponseT()
+
+    client_name = get_client(request)
+    if not client_name:
+        client_name = os.urandom(8).hex()
+        response.cookies["session"] = client_name
+        response.cookies["session"]["path"] = "/"
     if not find_task(client_name):
         add_task(client_name)
     if not client_data:
@@ -30,7 +39,7 @@ def handler(request: RequestT) -> ResponseT:
 
     document = render_template(TEMPLATE, context)
 
-    response = ResponseT(payload=document)
+    response.payload = document
 
     return response
 
@@ -48,7 +57,7 @@ def document_cleaning(client_name: str) -> str:
     dict_task["task402"] = 0
     with user_data_file.open("w") as file:
         for key, value in dict_task.items():
-            file.write(f"{key}={value}")
+            file.write(f"{key}={value}\n")
     answer = "The file has been cleared..."
 
     return answer
@@ -61,7 +70,7 @@ def add_number(client_name: str, number: int) -> int:
 
     with user_data_file.open("w") as dst:
         for key, value in dict_task.items():
-            dst.write(f"{key}={value}")
+            dst.write(f"{key}={value}\n")
 
     return number
 
@@ -69,7 +78,7 @@ def add_number(client_name: str, number: int) -> int:
 def add_task(client_name: str) -> bool:
     user_data_file = DIR_STORAGE / f"{client_name}.txt"
     with user_data_file.open("a") as new_task:
-        new_task.write("task402=0")
+        new_task.write("task402=0\n")
 
     return True
 
@@ -99,3 +108,14 @@ def find_task(client_name: str) -> bool:
         answer = True
 
     return answer
+
+
+def get_client(request: RequestT) -> Optional[str]:
+    if not request.cookies:
+        return None
+
+    morsel = request.cookies.get("session")
+    if not morsel:
+        return None
+
+    return morsel.value or None

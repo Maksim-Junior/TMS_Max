@@ -1,4 +1,3 @@
-import os
 import string
 from http import HTTPStatus
 from http.cookies import SimpleCookie
@@ -80,8 +79,6 @@ def prepare_cookies(headers: Dict[str, str]) -> SimpleCookie:
     cookies = SimpleCookie()
     if "Cookie" in headers:
         cookies.load(headers["Cookie"])
-    else:
-        cookies["name"] = os.urandom(8).hex()
 
     return cookies
 
