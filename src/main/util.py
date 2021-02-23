@@ -1,9 +1,8 @@
 from pathlib import Path
+from string import Template
 from typing import Union, Optional, Dict
-from urllib.parse import parse_qs
 
 from framework.dirs import DIR_TEMPLATES
-from main.custom_types import RequestT
 
 
 def wrong_words(n: str) -> bool:
@@ -32,10 +31,23 @@ def environ_formation(environ: dict) -> str:
     return show_environ
 
 
-def render_template(template_path: Union[str, Path], context: Optional[Dict] = None) -> str:
+def render_template(
+    template_path: Union[str, Path],
+    context: Optional[Dict] = None,
+    *,
+    engine: str = "{",
+) -> str:
     template = read_template(template_path)
     context = context or {}
-    document = template.format(**context)
+
+    engines = {
+        "{": lambda _ctx: template.format(**_ctx),
+        "$": Template(template).safe_substitute,
+    }
+
+    renderer = engines[engine]
+    document = renderer(context)
+
     return document
 
 
@@ -48,19 +60,3 @@ def read_template(template_path: Union[str, Path]) -> str:
         content = fd.read()
 
     return content
-
-
-def build_request(environ: Dict) -> RequestT:
-    qs = environ["QUERY_STRING"]
-    query = parse_qs(qs)
-
-    request = RequestT(
-        method=environ["REQUEST_METHOD"],
-        path=environ["PATH_INFO"],
-        query=query,
-    )
-
-    return request
-
-
-
