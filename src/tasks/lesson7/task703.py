@@ -1,3 +1,5 @@
+from django.http import HttpRequest, HttpResponse
+
 from main.custom_types import RequestT, ResponseT
 from main.util import render_template
 
@@ -19,6 +21,25 @@ def handler(request: RequestT) -> ResponseT:
     document = render_template(TEMPLATE, context)
 
     response = ResponseT(payload=document)
+
+    return response
+
+
+def handler_django(request: HttpRequest) -> HttpResponse:
+    number = request.GET.get("number")
+
+    if not number:
+        result = "Input number for find factorial..."
+    else:
+        result = solution(number)
+
+    context = {
+        "show_result": result
+    }
+
+    document = render_template(TEMPLATE, context)
+
+    response = HttpResponse(document)
 
     return response
 

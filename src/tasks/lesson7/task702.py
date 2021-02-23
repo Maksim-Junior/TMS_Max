@@ -1,5 +1,7 @@
 from random import randint
 
+from django.http import HttpResponse, HttpRequest
+
 from main.custom_types import RequestT, ResponseT
 from main.util import render_template
 
@@ -57,6 +59,61 @@ def handler(request: RequestT) -> ResponseT:
     document = render_template(TEMPLATE, context)
 
     response = ResponseT(payload=document)
+
+    return response
+
+
+def handler_django(request: HttpRequest) -> HttpResponse:
+
+    matrix_n = request.GET.get("lines_n")
+    matrix_m = request.GET.get("columns_m")
+
+    if not matrix_n and not matrix_m:
+        text = "Input dimension(n x m)..."
+        matrix = ""
+        sum_digits = ""
+        max_digit = ""
+        min_digit = ""
+    elif matrix_n and not matrix_m:
+        text = "Input number of columns(m)..."
+        matrix = ""
+        sum_digits = ""
+        max_digit = ""
+        min_digit = ""
+    elif not matrix_n and matrix_m:
+        text = "Input number of lines(n)..."
+        matrix = ""
+        sum_digits = ""
+        max_digit = ""
+        min_digit = ""
+    else:
+        my_matrix, sum_elem, max_elem, min_elem = solution(matrix_n, matrix_m)
+        if type(my_matrix) is list:
+            matrix = ""
+            sum_digits = f"Sum of digits --> {sum_elem}"
+            max_digit = f"Max digit --> {max_elem}"
+            min_digit = f"Min digit --> {min_elem}"
+            text = "matrix:"
+            for i in my_matrix:
+                matrix += f"<h2 style = 'color:#FFA07A;font-family: courier, monospace;'>{i}</h2>"
+        else:
+            text = my_matrix
+            sum_digits = sum_elem
+            max_digit = max_elem
+            min_digit = min_elem
+            matrix = ""
+
+    context = {
+        "show_text": text,
+        "show_matrix": matrix,
+        "show_sum": sum_digits,
+        "show_max": max_digit,
+        "show_min": min_digit,
+    }
+
+    document = render_template(TEMPLATE, context)
+
+    response = HttpResponse(document)
 
     return response
 

@@ -1,3 +1,5 @@
+from django.http import HttpResponse, HttpRequest
+
 from main.custom_types import RequestT, ResponseT
 from main.util import render_template
 
@@ -25,6 +27,31 @@ def handler(request: RequestT) -> ResponseT:
     document = render_template(TEMPLATE, context)
 
     response = ResponseT(payload=document)
+
+    return response
+
+
+def handler_django(request: HttpRequest) -> HttpResponse:
+
+    digit1 = request.GET.get("digit1")
+    digit2 = request.GET.get("digit2")
+
+    if not digit1 and not digit2:
+        result = "Input digits..."
+    elif digit1 and not digit2:
+        result = "Input second digit..."
+    elif not digit1 and digit2:
+        result = "Input first digit..."
+    else:
+        result = solution(digit1, digit2)
+
+    context = {
+        "show_text": result
+    }
+
+    document = render_template(TEMPLATE, context)
+
+    response = HttpResponse(document)
 
     return response
 

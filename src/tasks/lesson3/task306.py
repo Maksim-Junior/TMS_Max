@@ -1,3 +1,5 @@
+from django.http import HttpRequest, HttpResponse
+
 from main.custom_types import RequestT, ResponseT
 from main.util import render_template
 
@@ -17,6 +19,23 @@ def handler(request: RequestT) -> ResponseT:
     document = render_template(TEMPLATE, context)
 
     response = ResponseT(payload=document)
+
+    return response
+
+
+def handler_django(request: HttpRequest) -> HttpResponse:
+
+    age = request.GET.get("age")
+
+    result = solution(age) if age else "Input your age!"
+
+    context = {
+        "show_text": result
+    }
+
+    document = render_template(TEMPLATE, context)
+
+    response = HttpResponse(document)
 
     return response
 

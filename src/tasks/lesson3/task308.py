@@ -1,3 +1,5 @@
+from django.http import HttpRequest, HttpResponse
+
 from main.custom_types import RequestT, ResponseT
 from main.util import is_number, wrong_words, render_template
 
@@ -20,6 +22,26 @@ def handler(request: RequestT) -> ResponseT:
     document = render_template(TEMPLATE, context)
 
     response = ResponseT(payload=document)
+
+    return response
+
+
+def handler_django(request: HttpRequest) -> HttpResponse:
+    digit = request.GET.get("digit")
+
+    if not digit:
+        result = "Input digit..."
+    else:
+        cube_digit = solution(digit)
+        result = f"--> {cube_digit}"
+
+    context = {
+        "show_text": result
+    }
+
+    document = render_template(TEMPLATE, context)
+
+    response = HttpResponse(document)
 
     return response
 

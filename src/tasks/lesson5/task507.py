@@ -3,6 +3,8 @@ from http.cookies import SimpleCookie
 from random import randint
 from typing import Optional
 
+from django.http import HttpRequest, HttpResponse
+
 from framework.dirs import DIR_STORAGE
 from main.custom_types import RequestT, ResponseT
 from main.util import render_template
@@ -61,6 +63,58 @@ def handler(request: RequestT) -> ResponseT:
     cookie["name"] = client_name
 
     response = ResponseT(payload=document, cookie=cookie)
+
+    return response
+
+
+def handler_django(request: HttpRequest) -> HttpResponse:
+    from_n = request.POST.get("from_n")
+    to_m = request.POST.get("to_m")
+    number = request.POST.get("number")
+
+    response = HttpResponse()
+
+    client_name = get_client(request, response)
+    if not client_name:
+        client_name = os.urandom(8).hex()
+        response.cookies["session"] = client_name
+        response.cookies["session"]["path"] = "/"
+
+    if not find_task(client_name):
+        add_task(client_name)
+
+    dict_tasks = user_tasks_dict(client_name)
+
+    if dict_tasks["task507"] == "0":
+        if not from_n and not to_m:
+            result = "Input range!"
+        elif not from_n and to_m:
+            result = "Input from what number"
+        elif from_n and not to_m:
+            result = "Input until which number"
+        else:
+            if from_n.isdigit() and to_m.isdigit() and int(from_n) <= int(to_m):
+                rand_number = randint(int(from_n), int(to_m))
+                add_number(client_name, rand_number)
+                result = "You have three attempts. Input your answer..."
+            else:
+                result = "Wrong input..."
+    else:
+        if not number:
+            result = "Input your answer"
+        else:
+            if number.isdigit():
+                result = compare_numbers(client_name, int(number[0]))
+            else:
+                result = "Wrong input!"
+
+    context = {
+        "show_text": result
+    }
+
+    document = render_template(TEMPLATE, context)
+
+    response.content = document
 
     return response
 
@@ -149,15 +203,20 @@ def compare_numbers(client_name: str, number: int) -> str:
     return answer
 
 
-def get_client(request: RequestT) -> Optional[str]:
-    if not request.cookies:
-        return None
+def get_client(request: HttpRequest, response: HttpResponse) -> Optional[str]:
+    def client():
+        cn = f"{os.urandom(8).hex()}_django"
+        response.cookies["session"] = cn
+        response.cookies["session"]["path"] = "/"
+        return cn
 
-    morsel = request.cookies.get("session")
+    morsel = request.COOKIES.get("session")
     if not morsel:
-        return None
+        client_name = client()
+    else:
+        client_name = morsel
 
-    return morsel.value or None
+    return client_name
 
 
 def decrease_attempts(client_name: str) -> int:

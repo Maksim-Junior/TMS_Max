@@ -1,5 +1,7 @@
 from random import randint
 
+from django.http import HttpRequest, HttpResponse
+
 from main.custom_types import RequestT, ResponseT
 from main.util import render_template
 
@@ -45,6 +47,49 @@ def handler(request: RequestT) -> ResponseT:
     document = render_template(TEMPLATE, context)
 
     response = ResponseT(payload=document)
+
+    return response
+
+
+def handler_django(request: HttpRequest) -> HttpResponse:
+
+    matrix_n = request.GET.get("lines_n")
+    matrix_m = request.GET.get("columns_m")
+
+    if not matrix_n and not matrix_m:
+        text = "Input dimension(n x m)..."
+        matrix = ""
+        count_digits = ""
+    elif matrix_n and not matrix_m:
+        text = "Input number of columns(m)..."
+        matrix = ""
+        count_digits = ""
+    elif not matrix_n and matrix_m:
+        text = "Input number of lines(n)..."
+        matrix = ""
+        count_digits = ""
+    else:
+        my_matrix, count = solution(matrix_n, matrix_m)
+        if type(my_matrix) is list:
+            matrix = ""
+            count_digits = f"Count of digits --> {count}"
+            text = "matrix:"
+            for i in my_matrix:
+                matrix += f"<h2 style = 'color:#FFA07A;font-family: courier, monospace;'>{i}</h2>"
+        else:
+            text = my_matrix
+            count_digits = count
+            matrix = ""
+
+    context = {
+        "show_text": text,
+        "show_matrix": matrix,
+        "show_count": count_digits
+    }
+
+    document = render_template(TEMPLATE, context)
+
+    response = HttpResponse(document)
 
     return response
 

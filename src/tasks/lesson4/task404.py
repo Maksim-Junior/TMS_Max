@@ -1,3 +1,5 @@
+from django.http import HttpRequest, HttpResponse
+
 from main.custom_types import RequestT, ResponseT
 from main.util import render_template
 
@@ -20,6 +22,26 @@ def handler(request: RequestT) -> ResponseT:
     document = render_template(TEMPLATE, context)
 
     response = ResponseT(payload=document)
+
+    return response
+
+
+def handler_django(request: HttpRequest) -> HttpResponse:
+
+    integer = request.GET.get("integer")
+
+    if not integer:
+        result = "Input integer..."
+    else:
+        result = f"--> {solution(integer)}"
+
+    context = {
+        "show_text": result
+    }
+
+    document = render_template(TEMPLATE, context)
+
+    response = HttpResponse(document)
 
     return response
 

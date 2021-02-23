@@ -1,3 +1,5 @@
+from django.http import HttpRequest, HttpResponse
+
 from main.custom_types import RequestT, ResponseT
 from main.util import render_template
 
@@ -5,7 +7,6 @@ TEMPLATE = "tasks/lesson3/task_311.html"
 
 
 def handler(request: RequestT) -> ResponseT:
-
     gmail = request.query.get("gmail")
 
     if not gmail:
@@ -13,13 +14,32 @@ def handler(request: RequestT) -> ResponseT:
     else:
         result = solution(gmail[0])
 
-    context ={
+    context = {
         "show_text": result
     }
 
     document = render_template(TEMPLATE, context)
 
     response = ResponseT(payload=document)
+
+    return response
+
+
+def handler_django(request: HttpRequest) -> HttpResponse:
+    gmail = request.GET.get("gmail")
+
+    if not gmail:
+        result = "Input your Gmail!"
+    else:
+        result = solution(gmail)
+
+    context = {
+        "show_text": result
+    }
+
+    document = render_template(TEMPLATE, context)
+
+    response = HttpResponse(document)
 
     return response
 

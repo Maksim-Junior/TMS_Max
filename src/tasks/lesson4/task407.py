@@ -1,3 +1,5 @@
+from django.http import HttpResponse, HttpRequest
+
 from main.custom_types import RequestT, ResponseT
 from main.util import render_template
 
@@ -37,6 +39,43 @@ def handler(request: RequestT) -> ResponseT:
     document = render_template(TEMPLATE, context)
 
     response = ResponseT(payload=document)
+
+    return response
+
+
+def handler_django(request: HttpRequest) -> HttpResponse:
+
+    integer1 = request.GET.get("integer1")
+    integer2 = request.GET.get("integer2")
+
+    if not integer1 and not integer2:
+        text = "Input integers..."
+        show_count = ""
+    elif integer1 and not integer2:
+        text = "Input second integer..."
+        show_count = ""
+    elif not integer1 and integer2:
+        text = "Input first integer..."
+        show_count = ""
+    else:
+        numbers, count = solution(integer1, integer2)
+        if type(numbers) is list:
+            text = "--> "
+            for i in numbers:
+                text += f"{i} "
+            show_count = f"Count of numbers --> {count}"
+        else:
+            text = numbers
+            show_count = count
+
+    context = {
+        "show_text": text,
+        "show_count": show_count,
+    }
+
+    document = render_template(TEMPLATE, context)
+
+    response = HttpResponse(document)
 
     return response
 

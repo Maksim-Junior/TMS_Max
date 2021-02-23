@@ -1,3 +1,5 @@
+from django.http import HttpRequest, HttpResponse
+
 from main.custom_types import RequestT, ResponseT
 from main.util import wrong_words, is_number, render_template
 
@@ -37,6 +39,43 @@ def handler(request: RequestT) -> ResponseT:
     document = render_template(TEMPLATE, context)
 
     response = ResponseT(payload=document)
+
+    return response
+
+
+def handler_django(request: HttpRequest) -> HttpResponse:
+
+    money = request.GET.get("money")
+
+    if not money:
+        show_rubles = ""
+        show_penny = ""
+        show_text = "Input count of money!"
+    elif wrong_words(money) and is_number(money) or money.isdigit():
+        text, rubles, penny = solution(money)
+        show_rubles = ""
+        show_penny = ""
+        for i in rubles:
+            show_rubles += f"<h2><p style = 'color:#E6E6FA'>{i}</p></h2>"
+
+        for j in penny:
+            show_penny += f"<h2><p style = 'color:#E6E6FA'>{j}</p></h2>"
+
+        show_text = text
+    else:
+        show_rubles = ""
+        show_penny = ""
+        show_text = "Wrong data!"
+
+    context = {
+        "show_rubles": show_rubles,
+        "show_penny": show_penny,
+        "show_text": show_text
+    }
+
+    document = render_template(TEMPLATE, context)
+
+    response = HttpResponse(document)
 
     return response
 

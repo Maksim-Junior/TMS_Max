@@ -1,6 +1,8 @@
 import os
 from typing import Optional
 
+from django.http import HttpRequest, HttpResponse
+
 from framework.dirs import DIR_STORAGE
 from main.custom_types import RequestT, ResponseT
 from main.util import render_template
@@ -13,11 +15,8 @@ def handler(request: RequestT) -> ResponseT:
 
     response = ResponseT()
 
-    client_name = get_client(request)
-    if not client_name:
-        client_name = os.urandom(8).hex()
-        response.cookies["session"] = client_name
-        response.cookies["session"]["path"] = "/"
+    client_name = get_client(request, response)
+
     if not find_task(client_name):
         add_task(client_name)
     if not client_data:
@@ -40,6 +39,39 @@ def handler(request: RequestT) -> ResponseT:
     document = render_template(TEMPLATE, context)
 
     response.payload = document
+
+    return response
+
+
+def handler_django(request: HttpRequest) -> HttpResponse:
+    client_data = request.POST.get("number")
+
+    response = HttpResponse()
+
+    client_name = get_client(request, response)
+
+    if not find_task(client_name):
+        add_task(client_name)
+    if not client_data:
+        result = "Input number..."
+    else:
+        if client_data == "stop":
+            sum_numbers = calc_sum(client_name)
+            clear_file = document_cleaning(client_name)
+            result = f"Answer: {sum_numbers}. {clear_file}"
+        elif client_data.isnumeric():
+            number = int(client_data)
+            result = f"The number {add_number(client_name, number)} was written down..."
+        else:
+            result = "Wrong input!"
+
+    context = {
+        "show_text": result
+    }
+
+    document = render_template(TEMPLATE, context)
+
+    response.content = document
 
     return response
 
@@ -110,12 +142,17 @@ def find_task(client_name: str) -> bool:
     return answer
 
 
-def get_client(request: RequestT) -> Optional[str]:
-    if not request.cookies:
-        return None
+def get_client(request: HttpRequest, response: HttpResponse) -> Optional[str]:
+    def client():
+        cn = f"{os.urandom(8).hex()}_django"
+        response.cookies["session"] = cn
+        response.cookies["session"]["path"] = "/"
+        return cn
 
-    morsel = request.cookies.get("session")
+    morsel = request.COOKIES.get("session")
     if not morsel:
-        return None
+        client_name = client()
+    else:
+        client_name = morsel
 
-    return morsel.value or None
+    return client_name

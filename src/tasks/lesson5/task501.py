@@ -1,4 +1,7 @@
 from random import randint
+
+from django.http import HttpResponse, HttpRequest
+
 from main.custom_types import RequestT, ResponseT
 from main.util import render_template
 
@@ -31,6 +34,36 @@ def handler(request: RequestT) -> ResponseT:
     document = render_template(TEMPLATE, context)
 
     response = ResponseT(payload=document)
+
+    return response
+
+
+def handler_django(request: HttpRequest) -> HttpResponse:
+
+    dimension = request.GET.get("dimension")
+
+    if not dimension:
+        text = "Input matrix dimension..."
+        matrix = ""
+    else:
+        my_matrix = solution(dimension)
+        if type(my_matrix) is list:
+            matrix = ""
+            text = "matrix:"
+            for i in my_matrix:
+                matrix += f"<h2 style = 'color:#FFA07A;font-family: courier, monospace;'>{i}</h2>"
+        else:
+            text = my_matrix
+            matrix = ""
+
+    context = {
+        "show_text": text,
+        "show_matrix": matrix,
+    }
+
+    document = render_template(TEMPLATE, context)
+
+    response = HttpResponse(document)
 
     return response
 

@@ -1,3 +1,5 @@
+from django.http import HttpRequest, HttpResponse
+
 from main.custom_types import RequestT, ResponseT
 from main.util import render_template
 
@@ -5,7 +7,6 @@ TEMPLATE = "tasks/lesson3/task_307.html"
 
 
 def handler(request: RequestT) -> ResponseT:
-
     string = request.query.get("string")
 
     if not string:
@@ -20,6 +21,25 @@ def handler(request: RequestT) -> ResponseT:
     document = render_template(TEMPLATE, context)
 
     response = ResponseT(payload=document)
+
+    return response
+
+
+def handler_django(request: HttpRequest) -> HttpResponse:
+    string = request.GET.get("string")
+
+    if not string:
+        result = "Input string..."
+    else:
+        result = solution(string)
+
+    context = {
+        "show_text": result
+    }
+
+    document = render_template(TEMPLATE, context)
+
+    response = HttpResponse(document)
 
     return response
 
