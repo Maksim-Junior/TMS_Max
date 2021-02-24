@@ -17,7 +17,11 @@ SECRET_KEY = settings.SECRET_KEY
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = settings.MODE_DEBUG
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "max-tms10.herokuapp.com",
+    "localhost",
+    "127.0.0.1",
+]
 
 
 # Application definition
