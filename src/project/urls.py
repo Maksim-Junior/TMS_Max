@@ -1,6 +1,5 @@
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import admin
-from django.http import HttpRequest, HttpResponse
 from django.urls import path
 
 from main.pages import index
