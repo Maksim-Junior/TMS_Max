@@ -1,10 +1,5 @@
-from django.views.decorators.csrf import csrf_exempt
 from django.contrib import admin
 from django.urls import path, include
-
-from tasks.lesson4 import task404, task406, task407
-from tasks.lesson5 import lesson5, task501, task502, task503, task504, task507
-from tasks.lesson7 import lesson7, task702, task703
 
 urlpatterns = [
     path("admin/", admin.site.urls),
