@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Task 507</title>
+</head>
+<body bgcolor='#696969'>
+
+ <h2><a style='text-decoration: none' href='/tasks/lesson5/'><-To the lesson 5</a></h2>
+
+ <p></p>
+
+<p style = 'color:#E6E6FA;font-family: courier, monospace;'>
+    Write a game. The user must guess the number in 3 attempts.</p>
+<p style = 'color:#E6E6FA;font-family: courier, monospace;'>
+    The guessing range is entered. If the answer is correct, display You are the winner.</p>
+<p style = 'color:#E6E6FA;font-family: courier, monospace;'>
+    If it is wrong, give the player a hint (more or less the required number).</p>
+<p style = 'color:#E6E6FA;font-family: courier, monospace;'>
+    If the number is not guessed for the specified number of attempts, output:</p>
+<p style = 'color:#E6E6FA;font-family: courier, monospace;'>
+     You are the loser and the correct number.</p>
+
+
+<form method="post" enctype='application/x-www-form-urlencoded'>
+    <label style = 'color:#E6E6FA'  for="id_range">Range</label>
+    <input id="id_range" name="from_n" placeholder="Input from what number" type="text">
+    <input name="to_m" placeholder="Input until which number" type="text">
+    <button type="submit">Solve</button>
+</form>
+
+ <p></p>
+
+ <form method="post" enctype='application/x-www-form-urlencoded'>
+    <label style = 'color:#E6E6FA'  for="id_number">Your answer</label>
+    <input id="id_number" name="number" placeholder="Input from what number" type="text">
+    <button type="submit">Solve</button>
+</form>
+
+<h2><p style = 'color:#FFA07A;font-family: courier, monospace;'>{{show_text}}</p></h2>
+
+</body>
+</html>
