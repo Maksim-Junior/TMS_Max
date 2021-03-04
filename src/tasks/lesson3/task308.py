@@ -39,7 +39,7 @@ def handler_django(request: HttpRequest) -> HttpResponse:
         "show_text": result
     }
 
-    document = render_template(TEMPLATE, context)
+    document = render_template("tasks/lesson3/task_308.html", context)
 
     response = HttpResponse(document)
 

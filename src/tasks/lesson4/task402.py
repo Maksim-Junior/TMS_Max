@@ -44,24 +44,22 @@ def handler(request: RequestT) -> ResponseT:
 
 
 def handler_django(request: HttpRequest) -> HttpResponse:
-    client_data = request.POST.get("number")
 
     response = HttpResponse()
+    get_client(request, response)
 
-    client_name = get_client(request, response)
+    client_data = request.POST.get("number")
 
-    if not find_task(client_name):
-        add_task(client_name)
     if not client_data:
         result = "Input number..."
     else:
         if client_data == "stop":
-            sum_numbers = calc_sum(client_name)
-            clear_file = document_cleaning(client_name)
-            result = f"Answer: {sum_numbers}. {clear_file}"
+            numbers = request.session["task402"]
+            result = f"Answer: {numbers}"
         elif client_data.isnumeric():
             number = int(client_data)
-            result = f"The number {add_number(client_name, number)} was written down..."
+            request.session["task402"] += number
+            result = f"The number {number} was written down..."
         else:
             result = "Wrong input!"
 
@@ -69,7 +67,7 @@ def handler_django(request: HttpRequest) -> HttpResponse:
         "show_text": result
     }
 
-    document = render_template(TEMPLATE, context)
+    document = render_template("tasks/lesson4/task_402.html", context)
 
     response.content = document
 
@@ -144,6 +142,7 @@ def find_task(client_name: str) -> bool:
 
 def get_client(request: HttpRequest, response: HttpResponse) -> Optional[str]:
     def client():
+        request.session["task402"] = 0
         cn = f"{os.urandom(8).hex()}_django"
         response.cookies["session"] = cn
         response.cookies["session"]["path"] = "/"

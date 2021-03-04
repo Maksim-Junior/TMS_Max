@@ -15,7 +15,7 @@ def handler(_request: RequestT) -> ResponseT:
 
 
 def handler_django(_request: HttpRequest) -> HttpResponse:
-    document = render_template(TEMPLATE)
+    document = render_template("tasks/tasks.html")
 
     response = HttpResponse(document)
 

@@ -9,7 +9,6 @@ TEMPLATE = "tasks/lesson5/task_504.html"
 
 
 def handler(request: RequestT) -> ResponseT:
-
     matrix_n = request.query.get("lines_n")
     matrix_m = request.query.get("columns_m")
 
@@ -52,7 +51,6 @@ def handler(request: RequestT) -> ResponseT:
 
 
 def handler_django(request: HttpRequest) -> HttpResponse:
-
     matrix_n = request.GET.get("lines_n")
     matrix_m = request.GET.get("columns_m")
 
@@ -87,7 +85,7 @@ def handler_django(request: HttpRequest) -> HttpResponse:
         "show_count": count_digits
     }
 
-    document = render_template(TEMPLATE, context)
+    document = render_template("tasks/lesson5/task_504.html", context)
 
     response = HttpResponse(document)
 
@@ -142,8 +140,6 @@ def solution(matrix_n, matrix_m):
 def main():
     matrix_n = input("Enter number of lines --> ")
     matrix_m = input("Enter number of columns --> ")
-
-
 
     web_matrix, text_digits = solution(matrix_n, matrix_m)
 

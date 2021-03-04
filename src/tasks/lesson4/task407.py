@@ -73,7 +73,7 @@ def handler_django(request: HttpRequest) -> HttpResponse:
         "show_count": show_count,
     }
 
-    document = render_template(TEMPLATE, context)
+    document = render_template("tasks/lesson4/task_407.html", context)
 
     response = HttpResponse(document)
 

@@ -61,7 +61,7 @@ def handler_django(request: HttpRequest) -> HttpResponse:
         "show_matrix": matrix,
     }
 
-    document = render_template(TEMPLATE, context)
+    document = render_template("tasks/lesson5/task_501.html", context)
 
     response = HttpResponse(document)
 

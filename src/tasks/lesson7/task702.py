@@ -1,6 +1,7 @@
 from random import randint
 
 from django.http import HttpResponse, HttpRequest
+from django.shortcuts import render
 
 from main.custom_types import RequestT, ResponseT
 from main.util import render_template
@@ -111,9 +112,7 @@ def handler_django(request: HttpRequest) -> HttpResponse:
         "show_min": min_digit,
     }
 
-    document = render_template(TEMPLATE, context)
-
-    response = HttpResponse(document)
+    response = render(request, "tasks/lesson7/task_702.html", context)
 
     return response
 

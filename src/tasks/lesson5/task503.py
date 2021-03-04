@@ -87,7 +87,7 @@ def handler_django(request: HttpRequest) -> HttpResponse:
         "show_seven": sum_seven,
     }
 
-    document = render_template(TEMPLATE, context)
+    document = render_template("tasks/lesson5/task_503.html", context)
 
     response = HttpResponse(document)
 
