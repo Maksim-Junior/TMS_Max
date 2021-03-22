@@ -1,10 +1,7 @@
-from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render
+from django.views.generic import TemplateView
 
 
-def lesson3(_request: HttpRequest) -> HttpResponse:
-    document = render(_request, "lesson3/index.html")
+class Lesson3View(TemplateView):
+    template_name = "lesson3/index.html"
 
-    response = HttpResponse(document)
 
-    return response

@@ -1,24 +1,15 @@
-from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render
+from django.views.generic import TemplateView
 
 
-def task311(request: HttpRequest) -> HttpResponse:
-    gmail = request.GET.get("gmail")
+class Task311View(TemplateView):
+    template_name = "task311/index.html"
 
-    if not gmail:
-        result = "Input your Gmail!"
-    else:
-        result = solution(gmail)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        data = self.request.GET.get("gmail")
+        context["show_text"] = solution(data) if data else "Input your Gmail!"
 
-    context = {
-        "show_text": result,
-    }
-
-    document = render(request, "task311/index.html", context)
-
-    response = HttpResponse(document)
-
-    return response
+        return context
 
 
 def solution(gmail: str) -> str:

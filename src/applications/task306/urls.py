@@ -1,7 +1,7 @@
 from django.urls import path
 
-from applications.task306.views import task306
+from applications.task306.views import Task306View
 
 urlpatterns = [
-    path("", task306)
+    path("", Task306View.as_view())
 ]

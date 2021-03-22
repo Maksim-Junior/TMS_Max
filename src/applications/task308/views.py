@@ -1,25 +1,15 @@
-from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render
+from django.views.generic import TemplateView
 
 
-def task308(request: HttpRequest) -> HttpResponse:
-    digit = request.GET.get("digit")
+class Task308View(TemplateView):
+    template_name = "task308/index.html"
 
-    if not digit:
-        result = "Input digit..."
-    else:
-        cube_digit = solution(digit)
-        result = f"--> {cube_digit}"
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        data = self.request.GET.get("digit")
+        context["show_text"] = f"--> {solution(data)}" if data else "Input digit..."
 
-    context = {
-        "show_text": result
-    }
-
-    document = render(request, "task308/index.html", context)
-
-    response = HttpResponse(document)
-
-    return response
+        return context
 
 
 def solution(digit):

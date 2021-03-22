@@ -1,29 +1,20 @@
-from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render
+from django.views.generic import TemplateView
 
 
-def task307(request: HttpRequest) -> HttpResponse:
-    string = request.GET.get("string")
+class Task307View(TemplateView):
+    template_name = "task307/index.html"
 
-    if not string:
-        result = "Input string..."
-    else:
-        result = solution(string)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        data = self.request.GET.get("string")
+        context["show_text"] = solution(data) if data else "Input string..."
 
-    context = {
-        "show_text": result
-    }
-
-    document = render(request, "task307/index.html", context)
-
-    response = HttpResponse(document)
-
-    return response
+        return context
 
 
 def solution(string):
     if len(string) > 5:
-        answer = f"{string}"
+        answer = f'"{string}"'
     elif len(string) < 5:
         answer = "Need more!"
     else:

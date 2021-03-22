@@ -1,21 +1,15 @@
-from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render
+from django.views.generic import TemplateView
 
 
-def task306(request: HttpRequest) -> HttpResponse:
-    age = request.GET.get("age")
+class Task306View(TemplateView):
+    template_name = "task306/index.html"
 
-    result = solution(age) if age else "Input your age!"
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        data = self.request.GET.get("age")
+        context["show_text"] = solution(data) if data else "Input your age!"
 
-    context = {
-        "show_text": result
-    }
-
-    document = render(request, "task306/index.html", context)
-
-    response = HttpResponse(document)
-
-    return response
+        return context
 
 
 def solution(age):

@@ -1,41 +1,27 @@
-from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render
+from django.views.generic import TemplateView
 
 
-def task310(request: HttpRequest) -> HttpResponse:
-    money = request.GET.get("money")
+class Task310View(TemplateView):
+    template_name = "task310/index.html"
 
-    if not money:
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        data = self.request.GET.get("money")
+        text, rubles, penny = solution(data) if data else "Input count of money!", "", ""
+
         show_rubles = ""
-        show_penny = ""
-        show_text = "Input count of money!"
-    elif wrong_words(money) and is_number(money) or money.isdigit():
-        text, rubles, penny = solution(money)
-        show_rubles = ""
-        show_penny = ""
         for i in rubles:
             show_rubles += f" {i} "
 
-        for j in penny:
-            show_penny += f" {j} "
-
-        show_text = text
-    else:
-        show_rubles = ""
         show_penny = ""
-        show_text = "Wrong data!"
+        for i in penny:
+            show_penny += f" {i} "
 
-    context = {
-        "show_rubles": show_rubles,
-        "show_penny": show_penny,
-        "show_text": show_text
-    }
+        context["show_rubles"] = show_rubles
+        context["show_penny"] = show_penny
+        context["show_text"] = text
 
-    document = render(request, "task310/index.html", context)
-
-    response = HttpResponse(document)
-
-    return response
+        return context
 
 
 def divide_into_rubles_and_penny(count_of_money):
@@ -104,7 +90,12 @@ def divide_into_rubles_and_penny(count_of_money):
 
 
 def solution(count_of_money: str):
-    text, rubles, penny = divide_into_rubles_and_penny(count_of_money)
+    if wrong_words(count_of_money) and is_number(count_of_money) or count_of_money.isdigit():
+        text, rubles, penny = divide_into_rubles_and_penny(count_of_money)
+    else:
+        text = "Wrong data!"
+        rubles = ""
+        penny = ""
 
     return text, rubles, penny
 
