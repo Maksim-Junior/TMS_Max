@@ -4,10 +4,8 @@ from typing import Optional
 
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
-from django.views.decorators.csrf import csrf_exempt
 
 
-@csrf_exempt
 def task507(request: HttpRequest) -> HttpResponse:
     response = HttpResponse()
 
@@ -37,7 +35,7 @@ def task507(request: HttpRequest) -> HttpResponse:
         else:
             if number.isdigit():
                 rand_number = randint(request.session["task507_from"], request.session["task507_to"])
-                if request.session["task507_attempts"] > 1:
+                if request.session["task507_attempts"] > 0:
                     if int(number) > rand_number:
                         result = f'Your number is greater. Attempts: {request.session["task507_attempts"] - 1}'
                         request.session["task507_attempts"] -= 1
@@ -80,13 +78,17 @@ def get_client(request: HttpRequest, response: HttpResponse) -> Optional[str]:
     if not morsel:
         request.session["task507_from"] = 0
         request.session["task507_to"] = 0
-        request.session["task507_attempts"] = 0
+        request.session["task507_attempts"] = 3
         client_name = client()
     else:
-        request.session["task507_from"] = 0 if not request.session["task507_from"] else request.session["task507_from"]
-        request.session["task507_to"] = 0 if not request.session["task507_to"] else request.session["task507_to"]
-        request.session["task507_attempts"] = 3 if not request.session["task507_attempts"]\
-            else request.session["task507_attempts"]
+        request.session.get("task507_from", 0)
+        request.session.get("task507_to", 0)
+        request.session.get("task507_attempts", 3)
         client_name = morsel
 
     return client_name
+
+
+def rand_number(request: HttpRequest):
+
+    request.session.get("random", 0)

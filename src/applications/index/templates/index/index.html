@@ -1,21 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-
-        <title>Maksim</title>
-
-
-
-        <meta charset="utf-8">
-        <meta content="width=device-width, initial-scale=1" name="viewport">
-
-</head>
-        <body bgcolor='#696969'>
+{% extends "_base.html" %}
+{% block title %}Main{% endblock %}
+{% block main %}
             <h1 style='text-align:center;color:#F5F5DC;font-family: courier, monospace'>It's my project!</h1>
-            <hr style='border-width: 2px;border-color:#800000;'>
-            <h2 style='text-align:center;color:#F0FFF0;font-style:italic;'>
-            <a style='text-decoration: none' href='https://www.pexels.com/search/animals/'>
-            -->Some animals photo(click)<--</a></h2>
             <h2 style='color:#FFA07A'>What is Python?</h2>
             <p style = 'color:#E6E6FA;font-family: courier, monospace;'>Python is an interpreted, object-oriented,
             high-level programming language with dynamic semantics. Its high-level built in data structures,
@@ -27,6 +13,37 @@
             which encourages program modularity and code reuse.
             The Python interpreter and the extensive standard library are available in source or binary"
             form without charge for all major platforms, and can be freely distributed.</p>
-            <h1>---<a style='text-decoration: none' href='/tasks/'>Tasks</a>---</h1>
-        </body>
-</html>
+
+<li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Tasks
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="/tasks/306/">task 306</a></li>
+                        <li><a class="dropdown-item" href="/tasks/307/">task 307</a></li>
+                        <li><a class="dropdown-item" href="/tasks/308/">task 308</a></li>
+                        <li><a class="dropdown-item" href="/tasks/310/">task 310</a></li>
+                        <li><a class="dropdown-item" href="/tasks/311/">task 311</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="/tasks/402/">task 402</a></li>
+                        <li><a class="dropdown-item" href="/tasks/404/">task 404</a></li>
+                        <li><a class="dropdown-item" href="/tasks/406/">task 406</a></li>
+                        <li><a class="dropdown-item" href="/tasks/407/">task 407</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="/tasks/501/">task 501</a></li>
+                        <li><a class="dropdown-item" href="/tasks/502/">task 502</a></li>
+                        <li><a class="dropdown-item" href="/tasks/503/">task 503</a></li>
+                        <li><a class="dropdown-item" href="/tasks/504/">task 504</a></li>
+                        <li><a class="dropdown-item" href="/tasks/507/">task 507</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="/tasks/702/">task 702</a></li>
+                        <li><a class="dropdown-item" href="/tasks/703/">task 703</a></li>
+                    </ul>
+                </li>
+{% endblock %}

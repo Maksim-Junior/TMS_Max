@@ -1,14 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Task 306</title>
-</head>
-<body bgcolor='#696969'>
+{% extends "_base.html" %}
+{% block title %}306{% endblock %}
 
- <h2><a style='text-decoration: none' href='/tasks/lesson3/'><-To the lesson 3</a></h2>
- <p></p>
-
+{% block main %}
  <p style = 'color:#E6E6FA;font-family: courier, monospace;'>
      Ask the user for age. If age is less than 0 - display Wrong input,</p>
  <p style = 'color:#E6E6FA;font-family: courier, monospace;'>
@@ -21,6 +14,4 @@
 </form>
 
  <h2><p style = 'color:#FFA07A;font-family: courier, monospace;'>{{show_text}}</p></h2>
-
-</body>
-</html>
+{% endblock %}

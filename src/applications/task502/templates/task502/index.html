@@ -1,14 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Task 502</title>
-</head>
-<body bgcolor='#696969'>
+{% extends "_base.html" %}
+{% block title %}502{% endblock %}
 
- <h2><a style='text-decoration: none' href='/tasks/lesson5/'><-To the lesson 5</a></h2>
- <p></p>
-
+{% block main %}
  <p style = 'color:#E6E6FA;font-family: courier, monospace;'>
      Create a square matrix of dimension n and fill it with random values.</p>
  <p style = 'color:#E6E6FA;font-family: courier, monospace;'>
@@ -25,7 +18,4 @@
  <h2 style = 'color:#FFA07A;font-family: courier, monospace;'>{{show_matrix}}</h2>
 
 <h2><p style = 'color:#FFA07A;font-family: courier, monospace;'>{{show_sum}}</p></h2>
-
-
-</body>
-</html>
+{% endblock %}

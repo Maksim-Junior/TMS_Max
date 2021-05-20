@@ -27,3 +27,5 @@ pydantic = "*"
 dynaconf = {extras = [ "yaml",], version = "==3.1.2"}
 django = "*"
 dj-database-url = "*"
+fastapi = "*"
+uvicorn = "*"

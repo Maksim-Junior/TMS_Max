@@ -1,15 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Task 406</title>
-</head>
-<body bgcolor='#696969'>
+{% extends "_base.html" %}
+{% block title %}406{% endblock %}
 
- <h2><a style='text-decoration: none' href='/tasks/lesson4/'><-To the lesson 4</a></h2>
-
- <p></p>
-
+{% block main %}
 <p style = 'color:#E6E6FA;font-family: courier, monospace;'>
     Get the sum of cubes of natural numbers from n to m using a for loop</p>
 
@@ -21,6 +13,4 @@
 </form>
 
  <h2><p style = 'color:#FFA07A;font-family: courier, monospace;'>{{show_text}}</p></h2>
-
-</body>
-</html>
+{% endblock %}

@@ -1,14 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Task 310</title>
-</head>
-<body bgcolor='#696969'>
+{% extends "_base.html" %}
+{% block title %}310{% endblock %}
 
- <h2><a style='text-decoration: none' href='/tasks/lesson3/'><-To the lesson 3</a></h2>
- <p></p>
-
+{% block main %}
  <p style = 'color:#E6E6FA;font-family: courier, monospace;'>When entering the amount of money(ex: 34.45),
      the program should display the number of banknotes for this amount...</p>
 
@@ -23,6 +16,4 @@
 <h2><p style = 'color:#E6E6FA'>{{show_rubles}}</p></h2>
 
 <h2><p style = 'color:#E6E6FA'>{{show_penny}}</p></h2>
-
-</body>
-</html>
+{% endblock %}

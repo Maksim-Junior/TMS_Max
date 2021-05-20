@@ -1,15 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Task 702</title>
-</head>
-<body bgcolor='#696969'>
+{% extends "_base.html" %}
+{% block title %}702{% endblock %}
 
- <h2><a style='text-decoration: none' href='/tasks/lesson7/'><-To the lesson 7</a></h2>
-
- <p></p>
-
+{% block main %}
 <p style = 'color:#E6E6FA;font-family: courier, monospace;'>Write a program for working with matrices:</p>
  <p style = 'color:#E6E6FA;font-family: courier, monospace;'>- Creature</p>
  <p style = 'color:#E6E6FA;font-family: courier, monospace;'>- Output</p>
@@ -31,6 +23,4 @@
 <h2><p style = 'color:#FFA07A;font-family: courier, monospace;'>{{show_sum}}</p></h2>
 <h2><p style = 'color:#FFA07A;font-family: courier, monospace;'>{{show_max}}</p></h2>
 <h2><p style = 'color:#FFA07A;font-family: courier, monospace;'>{{show_min}}</p></h2>
-
-</body>
-</html>
+{% endblock %}
